@@ -81,7 +81,7 @@ input::placeholder {
   line-height: 26px;
 }
 
-button {
+.signup-button {
   width: 640px;
   height: 56px;
   border-radius: 40px;

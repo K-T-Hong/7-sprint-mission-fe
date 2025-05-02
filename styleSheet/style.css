@@ -168,7 +168,7 @@ h1 {
   gap: 0 64px ;
 }
 
-.word {
+.container {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -184,11 +184,11 @@ h1 {
 .right {
   align-items: flex-start;
 }
-.page1 {
+.top-page {
   width: 274px;
   height: 238px;
 }
-.home-img1 {
+.top-page-img {
   width: 588px;
   height: 444px;
   background-image: url(../image/Img_home_01.png);
@@ -196,12 +196,12 @@ h1 {
   background-position: center;
   background-repeat: no-repeat;
 }
-.page2 {
+.center-page {
   width: 310px;
   height: 238px;
   text-align: right;
 }
-.home-img2 {
+.center-page-img {
   width: 588px;
   height: 444px;
   background-image: url(../image/Img_home_02.png);
@@ -209,23 +209,17 @@ h1 {
   background-position: center;
   background-repeat: no-repeat;
 }
-.page3 {
+.bottom-page {
   width: 335px;
   height: 238px;
 }
-.home-img3 {
+.bottom-page-img {
   width: 588px;
   height: 444px;
   background-image: url(../image/Img_home_03.png);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-}
-
-
-.img {
-  width: 588px;
-  height: 444px;
 }
 
 /* 하단 영역 */
