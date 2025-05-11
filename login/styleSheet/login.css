@@ -15,19 +15,20 @@
   --Cool-Gray-400: #9ca3af;
   --Cool-Gray-100: #f3f4f6;
   --Secondary-400: #9ca3af;
+  --error-red: #f74747;
+  --white-white: #ffffff;
 }
 
 main {
   height: 100vh;
-  background-color: #ffffff;
+  background-color: var(--white-white);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.login-form {
+#login-form {
   width: 640px;
-  height: 618px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -46,7 +47,6 @@ main {
 
 .box {
   width: 640px;
-  height: 98px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -64,6 +64,13 @@ main {
   background-color: var(--Cool-Gray-100);
   padding: 16px 24px;
 }
+.error-message {
+  color : var(--error-red);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: normal;
+  padding: 8px 0 0 16px;
+}
 input {
   border: none;
 }
@@ -71,14 +78,26 @@ input:focus {
   border: 1px solid var(--Primary-100);
   outline: none;
 }
-
+input.error:focus {
+  border: 1px solid var(--error-red);
+}
 input::placeholder {
   color: var(--Secondary-400);
   font-size: 16px;
   font-weight: 400;
   line-height: 26px;
 }
-
+.password-box {
+  position: relative;
+}
+#seebutton {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  right: 24px;
+  top: 16px;
+  cursor: pointer;
+}
 .login-button {
   width: 640px;
   height: 56px;
@@ -96,14 +115,14 @@ input::placeholder {
   cursor: pointer;
 }
 
-button:hover {
-  background-color: var(--Primary-100);
+.login-button.active {
+  background-color: var(--Brand-blue);
 }
 
 .easy-login {
   width: 640px;
   height: 74px;
-  background-color: #E6F2FF;
+  background-color: #e6f2ff;
   padding: 16px 23px;
   border-radius: 8px;
   margin: 24px 0;
@@ -137,4 +156,90 @@ button:hover {
   color: var(--Primary-100);
   font-size: 14px;
   font-weight: 500px;
+}
+/* 경고창 */
+#custom-alert {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+.alert-hidden {
+  display: none !important;
+}
+/* 알림창 박스 */
+.alert-box {
+  width: 540px;
+  height: 250px;
+  background-color: var(--white-white);
+  padding: 108px 174px 123px;
+  border-radius: 8px;
+  text-align: center;
+  position: relative;
+}
+#alert-message {
+  font-family: 'Pretendard-Regular';
+  font-size: 16px;
+  font-weight: 500;
+  line-height: normal;
+  color: var(--Cool-Gray-800);
+}
+/* 확인 버튼*/
+#alert-button {
+  position: absolute;
+  right: 28px;
+  bottom: 28px;
+  width: 128px;
+  height: 48px;
+  padding: 12px 23px;
+  background-color: var(--Brand-blue);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: normal;
+  color: #fff;
+  text-align: center;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+@media (min-width: 375px) and (max-width: 743px) {
+  .login-form {
+    width: 100vw;
+    max-width: 400px;
+  }
+  .logo {
+    width: 196px;
+    height: 52px;
+    margin-bottom: 24px;
+  }
+  .box {
+    width: 100vw;
+    max-width: 400px;
+    gap: 8px 0;
+    font-size: 14px;
+    margin-bottom: 16px;
+    line-height: normal;
+  }
+  .login-button{
+    width: 100vw;
+    max-width: 400px;
+  }
+  .easy-login {
+    width: 100vw;
+    max-width: 400px;
+  }
+  .alert-box {
+    width: 327px;
+    height: 220px;
+    padding: 81px 68px 12px 67px;
+  }
+  #alert-button {
+    right: 103px;
+    bottom: 23px;
+    width: 120px;
+  }
 }

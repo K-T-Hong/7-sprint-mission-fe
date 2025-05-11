@@ -4,22 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../styleSheet/reset.css">
-    <link rel="stylesheet" href="./stlyeSheet/login.css">
+    <link rel="stylesheet" href="./styleSheet/login.css">
     <title>로그인</title>
   </head>
   <body>
     <main>
-      <form class="login-form">
+      <form id="login-form">
         <a class="logo" href="../index.html"></a>
         <div class="box">
           <label for="email" class="word">이메일</label>
-          <input type="email" id="email" placeholder="이메일을 입력해주세요">
+          <div>
+            <input type="email" id="email" placeholder="이메일을 입력해주세요">
+            <div class="error-message" id="email-error"></div>
+          </div>
         </div>
         <div class="box">
           <label for="password" class="word">비밀번호</label>
-          <input type="password" id="password" placeholder="비밀번호를 입력해주세요">
+          <div class="password-box">
+            <input type="password" id="password" placeholder="비밀번호를 입력해주세요" >
+            <img src="./image/close eye.png"  id="seebutton">
+            <div class="error-message" id="password-error"></div>
+          </div>
         </div>
-        <button class="login-button">로그인</button>
+        <button type="submit" class="login-button">로그인</button>
         <div class="easy-login">
           <p>간편 로그인하기</p>
           <div class="link-button">
@@ -32,5 +39,12 @@
         </div>
       </form>
     </main>
+    <div id="custom-alert" class="alert-hidden">
+      <div class="alert-box">
+        <p id="alert-message">error</p>
+        <button type="button" id="alert-button">확인</button>
+      </div>
+    </div>
+    <script src="./login.js"></script>
   </body>
 </html>

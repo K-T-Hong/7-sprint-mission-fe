@@ -4,7 +4,6 @@
   font-weight: 400;
   font-style: normal;
 }
-
 * {
   font-family: 'Pretendard-Regular';
   box-sizing: border-box;
@@ -16,6 +15,8 @@
   --Cool-Gray-400: #9ca3af;
   --Cool-Gray-100: #f3f4f6;
   --Secondary-400: #9ca3af;
+  --error-red: #f74747;
+  --white-white: #ffffff;
 }
 
 main {
@@ -26,9 +27,8 @@ main {
   align-items: center;
 }
 
-.signup-form {
+#signup-form {
   width: 640px;
-  height: 842px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -47,19 +47,18 @@ main {
 
 .box {
   width: 640px;
-  height: 98px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   gap: 16px 0;
   font-size: 18px;
   font-weight: 700;
-  line-height: 26px;  
+  line-height: normal;  
   margin-bottom: 24px;
 }
 
 #password, #email, #name, #password-check {
-  width: 640px;
+  width: 100%;
   height: 56px;
   border-radius: 12px;
   background-color: #f3f4f6;
@@ -73,12 +72,33 @@ input:focus {
   border: 1px solid var(--Primary-100);
   outline: none;
 }
-
+input.error:focus {
+  border: 1px solid var(--error-red);
+}
 input::placeholder {
-  color: #9ca3af;
+  color: var(--Cool-Gray-400);
   font-size: 16px;
   font-weight: 400;
   line-height: 26px;
+}
+.error-message {
+  color : var(--error-red);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: normal;
+  padding: 8px 0 0 16px;
+}
+
+.password-box {
+  position: relative;
+}
+.seebutton {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  right: 24px;
+  top: 16px;
+  cursor: pointer;
 }
 
 .signup-button {
@@ -98,14 +118,14 @@ input::placeholder {
   cursor: pointer;
 }
 
-button:hover {
-  background-color: var(--Primary-100);
+.signup-button.active {
+  background-color: var(--Brand-blue);
 }
 
 .easy-login {
   width: 640px;
   height: 74px;
-  background-color: #E6F2FF;
+  background-color: #e6f2ff;
   padding: 16px 23px;
   border-radius: 8px;
   margin: 24px 0;
@@ -139,4 +159,89 @@ button:hover {
   color: var(--Brand-blue);
   font-size: 14px;
   font-weight: 500px;
+}
+/* 경고창 */
+#custom-alert {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+.alert-hidden {
+  display: none !important;
+}
+/* 알림창 박스 */
+.alert-box {
+  width: 540px;
+  height: 250px;
+  background-color: var(--white-white);
+  padding: 108px 174px 123px;
+  border-radius: 8px;
+  text-align: center;
+  position: relative;
+}
+#alert-message {
+  font-family: 'Pretendard-Regular';
+  font-size: 16px;
+  font-weight: 500;
+  line-height: normal;
+  color: var(--Cool-Gray-800);
+}
+/* 확인 버튼*/
+#alert-button {
+  position: absolute;
+  right: 28px;
+  bottom: 28px;
+  width: 128px;
+  height: 48px;
+  padding: 12px 23px;
+  background-color: var(--Brand-blue);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: normal;
+  color: #fff;
+  text-align: center;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+@media (min-width: 375px) and (max-width: 743px) {
+  .signup-form {
+    width: 100vw;
+    max-width: 400px;
+  }
+  .logo {
+    width: 196px;
+    height: 52px;
+    margin-bottom: 24px;
+  }
+  .box {
+    width: 100vw;
+    max-width: 400px;
+    gap: 8px 0;
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+  .signup-button{
+    width: 100vw;
+    max-width: 400px;
+  }
+  .easy-login {
+    width: 100vw;
+    max-width: 400px;
+  }
+    .alert-box {
+    width: 327px;
+    height: 220px;
+    padding: 81px 68px 12px 67px;
+  }
+  #alert-button {
+    right: 103px;
+    bottom: 23px;
+    width: 120px;
+  }
 }
