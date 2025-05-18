@@ -73,10 +73,10 @@ seeButton.addEventListener('click', () => {
 // alert 메세지
 function showAlert(message) {
   alertMessage.textContent = message;
-  alertBox.classList.remove("alert-hidden");
+  alertBox.style.display = 'flex';
 }
 function closeAlert() {
-  alertBox.classList.add("alert-hidden");
+  alertBox.style.display = 'none';
 }
 alertButton.addEventListener("click", closeAlert);
 
@@ -87,7 +87,9 @@ document.getElementById('login-form').addEventListener("submit", function (event
   const email = emailInput.value.trim();
   const password = passwordInput.value.trim();
 
-  if (!USER_DATA[email] || USER_DATA[email] !== password) {
+  if (!USER_DATA[email]) {
+    showAlert("존재하지 않는 이메일입니다.");
+  } else if (USER_DATA[email] !== password) {
     showAlert("비밀번호가 일치하지 않습니다.");
   } else {
     window.location.href = "../items.html";

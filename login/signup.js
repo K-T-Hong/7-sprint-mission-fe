@@ -92,10 +92,10 @@ seeButtons.forEach(button => {
 // alert 메세지
 function showAlert(message) {
   alertMessage.textContent = message;
-  alertBox.classList.remove("alert-hidden");
+  alertBox.style.display = 'flex';
 }
 function closeAlert() {
-  alertBox.classList.add("alert-hidden");
+  alertBox.style.display = 'none';
 }
 alertButton.addEventListener("click", closeAlert);
 
