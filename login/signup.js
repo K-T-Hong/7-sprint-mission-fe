@@ -84,7 +84,7 @@ seeButtons.forEach(button => {
     const isVisible = input.type === 'text';
     input.type = isVisible ? 'password' : 'text';
 
-    button.src = isVisible ? './image/close eye.png' : './image/open eye.png';
+    button.src = isVisible ? './image/close_eye.png' : './image/open_eye.png';
     button.alt = isVisible ? '비밀번호 보기' : '비밀번호 숨기기';
   });
 });

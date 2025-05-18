@@ -67,7 +67,7 @@ seeButton.addEventListener('click', () => {
 
   const isPasswordVisible = passwordInput.type === "text";
   passwordInput.type = isPasswordVisible ? "password" : "text";
-  seeButton.src = isPasswordVisible ? "./image/close eye.png" : "./image/open eye.png";
+  seeButton.src = isPasswordVisible ? "./image/close_eye.png" : "./image/open_eye.png";
   seeButton.alt = isPasswordVisible ? "비밀번호 보기" : "비밀번호 숨기기";
 })
 // alert 메세지
