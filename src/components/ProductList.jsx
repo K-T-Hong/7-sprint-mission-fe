@@ -3,10 +3,17 @@ import React from "react";
 import ProductCard from "./ProductCard.jsx";
 import { useProductList } from "./hooks/useProductList.js";
 import { usePagination } from "./hooks/usePagination.js";
-import { usePageSize } from "./hooks/usePageSize.js";
+import { useScreenSize } from "./hooks/useScreenSize.js";
+import { Link } from "react-router-dom";
+import { SCREEN_SIZE } from "./hooks/SCREEN_SIZE.js";
 
 function ProductList() {
-  const pageSize = usePageSize(10, 6, 4);
+  const screenSize = useScreenSize();
+
+  let pageSize;
+  if (screenSize === SCREEN_SIZE.DESKTOP) pageSize = 10;
+  else if (screenSize === SCREEN_SIZE.TABLET) pageSize = 6;
+  else pageSize = 4;
 
   const {
     items,
@@ -33,28 +40,28 @@ function ProductList() {
     <div>
       <div className="listArea">
         <div className="titleBar">
-          <h1 className="barTitle">판매 중인 상품</h1>
-          <div className="optionBar">
-            <input
-              className="searchInput"
-              type="text"
-              placeholder="검색할 상품을 입력해주세요"
-              value={search}
-              onChange={handleSearch}
-            />
-            <button className="registrationButton">상품 등록하기</button>
-            <select
-              className="selectButton"
-              value={sort}
-              onChange={handleSortChange}
-            >
-              <option value="recent">최신순</option>
-              <option value="favoriteCount">좋아요순</option>
-            </select>
-          </div>
+          <h1 className="titleWord">판매 중인 상품</h1>
+          <input
+            className="searchInput"
+            type="text"
+            placeholder="검색할 상품을 입력해주세요"
+            value={search}
+            onChange={handleSearch}
+          />
+          <Link to="/registration" className="registrationButton">
+            상품 등록하기
+          </Link>
+          <select
+            className="selectButton"
+            value={sort}
+            onChange={handleSortChange}
+          >
+            <option value="recent">최신순</option>
+            <option value="favoriteCount">좋아요순</option>
+          </select>
         </div>
         <div className="productCardArea">
-          {items.map((item) => (
+          {items.map(item => (
             <ProductCard key={item.id} item={item} />
           ))}
         </div>
@@ -67,7 +74,7 @@ function ProductList() {
         >
           &lt;
         </button>
-        {pageNumbers.map((num) => (
+        {pageNumbers.map(num => (
           <button
             className={`pageButton${num === page ? " active" : ""}`}
             key={num}

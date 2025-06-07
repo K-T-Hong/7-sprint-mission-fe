@@ -2,7 +2,7 @@ import React from "react";
 import ProductList from "./ProductList";
 import BestProductList from "./BestProductList";
 
-function Mainpage() {
+function MarketMainPage() {
   return (
     <>
       <div>
@@ -15,4 +15,4 @@ function Mainpage() {
   );
 }
 
-export default Mainpage;
+export default MarketMainPage;

@@ -1,14 +1,18 @@
 import React from "react";
-import Logo from "../assets/panda-logo.svg";
+import { Link, NavLink } from "react-router-dom";
 import "./Navbar.css";
 
 function Navbar() {
   return (
     <nav className="nav-area">
       <div className="navbar">
-        <div className="logo" />
-        <div className="navbarPage">자유게시판</div>
-        <div className="navbarPage">중고마켓</div>
+        <Link to="/" className="logo" />
+        <NavLink to="/board" className="navbarPage">
+          자유게시판
+        </NavLink>
+        <NavLink to="/items" className="navbarPage">
+          중고마켓
+        </NavLink>
       </div>
       <div>
         <button className="login-button">로그인</button>

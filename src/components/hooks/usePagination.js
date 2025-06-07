@@ -28,7 +28,7 @@ export function usePagination({
   const hasPrev = page > 1;
   const hasNext = page < totalPages;
 
-  const handlePageChange = (nextPage) => {
+  const handlePageChange = nextPage => {
     if (nextPage !== page && nextPage >= 1 && nextPage <= totalPages) {
       setPage(nextPage);
     }

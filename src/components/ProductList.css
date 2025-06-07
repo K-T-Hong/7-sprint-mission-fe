@@ -12,12 +12,18 @@
 .titleBar {
   width: 100%;
   height: 42px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  grid-template-areas: "title input add select";
+  gap: 12px;
 }
 
-.barTitle {
+.titleWord {
+  width: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-area: title;
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
@@ -25,25 +31,39 @@
   color: var(--Secondary-900);
 }
 
-.optionBar {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-}
 .searchInput {
+  grid-area: input;
   width: 325px;
   height: 42px;
   padding: 9px 20px 9px 16px;
   border-radius: 12px;
-  border: none;
+  border: 1px solid var(--Secondary-100);
   background-color: var(--Secondary-100);
+  color: var(--Secondary-900);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px;
 }
+
 .searchInput:hover,
 .searchInput:focus {
   border: 1px solid var(--Primary-100);
   outline: none;
 }
+.searchInput::placeholder {
+  color: var(--Secondary-400);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px;
+}
+
 .registrationButton {
+  grid-area: add;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 133px;
   height: 42px;
   padding: 12px 23px;
@@ -55,14 +75,16 @@
   font-style: normal;
   font-weight: 600;
   text-align: center;
+  text-decoration: none;
 }
 .selectButton {
+  grid-area: select;
   width: 130px;
   height: 42px;
   padding: 12px 20px;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
   border-radius: 12px;
   border: 1px solid var(--Cool-Gray-200);
   background-color: #fff;
@@ -148,8 +170,24 @@
   .listArea {
     max-width: 343px;
   }
+  .titleBar {
+    height: 92px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "title add" "input select";
+  }
   .searchInput {
     width: 288px;
+  }
+  .selectButton {
+    width: 42px;
+  }
+  .titleWord,
+  .searchInput {
+    justify-self: start;
+  }
+  .registrationButton,
+  .selectButton {
+    justify-self: end;
   }
   .productCardArea {
     grid-template-columns: repeat(2, 1fr);

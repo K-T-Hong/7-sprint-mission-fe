@@ -2,10 +2,16 @@ import "./BestProductList.css";
 import React, { useState, useEffect } from "react";
 import { getProduct } from "../api";
 import ProductCard from "./ProductCard";
-import { usePageSize } from "./hooks/usePageSize";
+import { useScreenSize } from "./hooks/useScreenSize";
+import { SCREEN_SIZE } from "./hooks/SCREEN_SIZE";
 
 function BestProductList() {
-  const pageSize = usePageSize(4, 2, 1);
+  const screenSize = useScreenSize();
+  let pageSize;
+  if (screenSize === SCREEN_SIZE.DESKTOP) pageSize = 4;
+  else if (screenSize === SCREEN_SIZE.TABLET) pageSize = 2;
+  else pageSize = 1;
+
   const [bestList, setBestList] = useState([]);
 
   useEffect(() => {
@@ -18,13 +24,13 @@ function BestProductList() {
       setBestList(bestItems);
     };
     bestData();
-  }, [pageSize]);
+  }, [screenSize, pageSize]);
 
   return (
     <div className="bestListArea">
       <h1 className="bestTitle">베스트 상품</h1>
       <div className="bestItemList">
-        {bestList.map((item) => (
+        {bestList.map(item => (
           <ProductCard key={item.id} item={item} size="large" />
         ))}
       </div>

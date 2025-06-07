@@ -27,6 +27,8 @@ html {
   --Primary-200: #2f80ed;
   --Cool-Gray-100: #f3f4f6;
   --Cool-Gray-200: #e5e7eb;
+  --Cool-Gray-400: #9ca3af;
   --Cool-Gray-500: #6b7280;
   --Cool-Gray-600: #4b5563;
+  --error-red: #f74747;
 }
