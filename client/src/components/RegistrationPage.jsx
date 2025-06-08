@@ -3,6 +3,7 @@ import "./RegistrationPage.css";
 import { useErrorCheck } from "./hooks/useErrorCheck";
 import { useNavigate } from "react-router-dom";
 import { useTagBox } from "./hooks/useTagBox";
+import { getProduct } from "../api";
 
 const textSize = v =>
   v.trim() === ""
@@ -47,13 +48,29 @@ function RegistrationPage() {
     !itemPrice ||
     itemPriceError;
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
     if (itemNameError || itemInforError || itemPriceError) {
       return;
     }
-    alert("등록 완료!");
-    navigate("/items/제품상세페이지");
+
+    const res = await fetch("http://localhost:4000/products", {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({
+        name: itemName,
+        description: itemInfor,
+        price: Number(itemPrice),
+        tags: tags,
+      }),
+    });
+
+    if (res.ok) {
+      alert("등록 완료!");
+      navigate("/items/제품상세페이지");
+    } else {
+      alert("등록 실패!");
+    }
   };
 
   const {
