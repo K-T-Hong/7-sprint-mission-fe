@@ -7,8 +7,13 @@ const prisma = new PrismaClient();
 // 상품 목록 조회
 router.get("/", async (req, res) => {
   try {
-    const { page = 1, limit = 10, sort = "recent", q } = req.query;
-    const skip = (page - 1) * limit;
+    const page = Number(req.query.page) || 1;
+    const pageSize = Number(req.query.pageSize) || 10;
+    const sort = req.query.sort || "recent";
+    const q = req.query.q;
+
+    const skip = (page - 1) * pageSize;
+
     const where = q
       ? {
           OR: [
@@ -25,8 +30,8 @@ router.get("/", async (req, res) => {
       prisma.product.findMany({
         where,
         orderBy,
-        skip: Number(skip),
-        take: Number(limit),
+        skip,
+        take: pageSize,
         select: {
           id: true,
           name: true,
@@ -38,7 +43,7 @@ router.get("/", async (req, res) => {
       prisma.product.count({ where }),
     ]);
 
-    res.json({ list, totalCount, page: Number(page), limit: Number(limit) });
+    res.json({ list, totalCount, page, pageSize });
   } catch (err) {
     res.status(500).json({ error: "상품 목록 조회 실패" });
   }
