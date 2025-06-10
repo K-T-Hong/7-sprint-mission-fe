@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 const router = express.Router();
 const prisma = new PrismaClient();
 
-// 상품 목록 조회
+// 게시판 목록 조회
 router.get("/", async (req, res) => {
   try {
     const page = Number(req.query.page) || 1;
@@ -17,8 +17,8 @@ router.get("/", async (req, res) => {
     const where = q
       ? {
           OR: [
-            { name: { contains: q, mode: "insensitive" } },
-            { description: { contains: q, mode: "insensitive" } },
+            { title: { contains: q, mode: "insensitive" } },
+            { content: { contains: q, mode: "insensitive" } },
           ],
         }
       : {};
@@ -27,100 +27,94 @@ router.get("/", async (req, res) => {
       sort === "recent" ? { createdAt: "desc" } : { createdAt: "desc" };
 
     const [list, totalCount] = await Promise.all([
-      prisma.product.findMany({
+      prisma.article.findMany({
         where,
         orderBy,
         skip,
         take: pageSize,
         select: {
           id: true,
-          name: true,
-          price: true,
+          title: true,
+          content: true,
           createdAt: true,
           updatedAt: true,
         },
       }),
-      prisma.product.count({ where }),
+      prisma.article.count({ where }),
     ]);
-
     res.json({ list, totalCount, page, pageSize });
   } catch (err) {
-    res.status(500).json({ error: "상품 목록 조회 실패" });
+    res.status(500).json({ error: "게시판 목록 조회 실패" });
   }
 });
 
-// 상품 상세 조회
+// 게시글 조회
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const product = await prisma.product.findUnique({
+    const article = await prisma.article.findUnique({
       where: { id },
       select: {
         id: true,
-        name: true,
-        description: true,
-        price: true,
-        tags: true,
+        title: true,
+        content: true,
         createdAt: true,
       },
     });
-    if (!product) {
-      return res.status(404).json({ error: "상품이 존재하지 않습니다." });
+    if (!article) {
+      return res.status(404).json({ error: "게시글이 존재하지 않습니다." });
     }
-    res.json(product);
+    res.json(article);
   } catch (err) {
-    res.status(400).json({ error: "잘못된 상품 ID" });
+    res.status(400).json({ error: "잘못된 게시글 ID" });
   }
 });
 
-// 상품 등록
+// 게시글 등록
 router.post("/", async (req, res) => {
   try {
-    const { name, description, price, tags } = req.body;
-    if (!name || !description || !price) {
+    const { title, content } = req.body;
+    if (!title || !content) {
       return res.status(400).json({ error: "필수값 누락" });
     }
-    const product = await prisma.product.create({
+    const article = await prisma.article.create({
       data: {
-        name,
-        description,
-        price: Number(price),
-        tags: Array.isArray(tags) ? tags : [],
+        title,
+        content,
       },
     });
-    res.status(201).json(product);
+    res.status(201).json(article);
   } catch (err) {
-    console.error("상품 등록 실패", err);
-    res.status(500).json({ error: "상품 등록 실패" });
+    res.status(500).json({ error: "게시글 등록 실패" });
   }
 });
 
-// 상품 수정
+// 게시글 수정
 router.patch("/:id", async (req, res) => {
   try {
-    const { name, description, price, tags } = req.body;
-    if (!name || !description || !price) {
+    const { title, content } = req.body;
+    if (!title || !content) {
       return res.status(400).json({ error: "필수값 누락" });
     }
-    const product = await prisma.product.update({
+    const article = await prisma.article.update({
       where: { id: req.params.id },
-      data: { name, description, price, tags },
+      data: { title, content },
     });
-    res.json(product);
+    res.json(article);
   } catch (err) {
-    res.status(400).json({ error: "상품 수정 실패" });
+    res.status(400).json({ error: "게시글 수정 실패" });
   }
 });
 
-// 상품 삭제
+// 게시글 삭제
 router.delete("/:id", async (req, res) => {
   try {
-    await prisma.product.delete({
+    await prisma.article.delete({
       where: { id: req.params.id },
     });
     res.status(204).send();
   } catch (err) {
-    res.status(400).json({ error: "상품 삭제 실패" });
+    res.status(400).json({ error: "게시글 삭제 실패" });
   }
 });
 
