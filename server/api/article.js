@@ -74,13 +74,28 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const { title, content } = req.body;
-    if (!title || !content) {
-      return res.status(400).json({ error: "필수값 누락" });
+    if (
+      typeof title !== "string" ||
+      title.trim().length < 1 ||
+      title.trim().length > 20
+    ) {
+      return res
+        .status(400)
+        .json({ error: "제목은 20자 이내로 입력해주세요." });
+    }
+    if (
+      typeof content !== "string" ||
+      content.trim().length < 1 ||
+      content.trim().length > 200
+    ) {
+      return res
+        .status(400)
+        .json({ error: "내용은 200자 이내로 입력해주세요." });
     }
     const article = await prisma.article.create({
       data: {
-        title,
-        content,
+        title: title.trim(),
+        content: content.trim(),
       },
     });
     res.status(201).json(article);
@@ -93,12 +108,36 @@ router.post("/", async (req, res) => {
 router.patch("/:id", async (req, res) => {
   try {
     const { title, content } = req.body;
-    if (!title || !content) {
-      return res.status(400).json({ error: "필수값 누락" });
+    const updateData = {};
+
+    if (title !== undefined) {
+      if (
+        typeof title !== "string" ||
+        title.trim().length < 1 ||
+        title.trim().length > 20
+      ) {
+        return res
+          .status(400)
+          .json({ error: "제목은 20자 이내로 입력해주세요." });
+      }
+      updateData.title = title.trim();
     }
+    if (content !== undefined) {
+      if (
+        typeof content !== "string" ||
+        content.trim().length < 1 ||
+        content.trim().length > 200
+      ) {
+        return res
+          .status(400)
+          .json({ error: "내용은 200자 이내로 입력해주세요." });
+      }
+      updateData.content = content.trim();
+    }
+
     const article = await prisma.article.update({
       where: { id: req.params.id },
-      data: { title, content },
+      data: updateData,
     });
     res.json(article);
   } catch (err) {

@@ -5,14 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { useTagBox } from "./hooks/useTagBox";
 import { getProduct } from "../api";
 
-const textSize = v =>
+const nameSizeErrorText = v =>
   v.trim() === ""
     ? "필수 입력 항목입니다."
     : v.length > 10
     ? "10자 이내로 입력해주세요"
     : "";
 
-const textLongSize = v =>
+const inforSizeErrorText = v =>
   v.trim() === ""
     ? "필수 입력 항목입니다."
     : v.length < 10
@@ -21,7 +21,7 @@ const textLongSize = v =>
     ? "100자 이내로 입력해주세요"
     : "";
 
-const onlyNumber = v =>
+const onlyNumberErrorText = v =>
   v.trim() === ""
     ? "필수 입력 항목입니다."
     : isNaN(v)
@@ -30,14 +30,17 @@ const onlyNumber = v =>
 
 function RegistrationPage() {
   const navigate = useNavigate();
-  const [itemName, itemNameChange, itemNameError] = useErrorCheck("", textSize);
+  const [itemName, itemNameChange, itemNameError] = useErrorCheck(
+    "",
+    nameSizeErrorText
+  );
   const [itemInfor, itemInforChange, itemInforError] = useErrorCheck(
     "",
-    textLongSize
+    inforSizeErrorText
   );
   const [itemPrice, itemPriceChange, itemPriceError] = useErrorCheck(
     "",
-    onlyNumber
+    onlyNumberErrorText
   );
 
   const isDisabled = () =>

@@ -77,20 +77,47 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const { name, description, price, tags } = req.body;
-    if (!name || !description || !price) {
-      return res.status(400).json({ error: "필수값 누락" });
+    if (
+      typeof name !== "string" ||
+      name.trim().length < 1 ||
+      name.trim().length > 10
+    ) {
+      return res
+        .status(400)
+        .json({ error: "상품명은 10자 이내로 입력해주세요." });
     }
+    if (
+      typeof description !== "string" ||
+      description.trim().length < 10 ||
+      description.trim().length > 100
+    ) {
+      return res
+        .status(400)
+        .json({ error: "상품 설명은 10 ~ 100자 사이로 입력해주세요." });
+    }
+    const priceNumber = Number(price);
+    if (isNaN(priceNumber) || priceNumber < 0) {
+      return res.status(400).json({ error: "가격은 0 이상이어야 합니다." });
+    }
+    if (
+      !Array.isArray(tags) ||
+      !tags.every(tag => typeof tag === "string" && tag.trim().length <= 5)
+    ) {
+      return res
+        .status(400)
+        .json({ error: "태그는 각각 5글자 이내의 문자열이어야 합니다." });
+    }
+
     const product = await prisma.product.create({
       data: {
-        name,
-        description,
-        price: Number(price),
-        tags: Array.isArray(tags) ? tags : [],
+        name: name.trim(),
+        description: description.trim(),
+        price: priceNumber,
+        tags: tags.map(tag => tag.trim()),
       },
     });
     res.status(201).json(product);
   } catch (err) {
-    console.error("상품 등록 실패", err);
     res.status(500).json({ error: "상품 등록 실패" });
   }
 });
@@ -99,12 +126,53 @@ router.post("/", async (req, res) => {
 router.patch("/:id", async (req, res) => {
   try {
     const { name, description, price, tags } = req.body;
-    if (!name || !description || !price) {
-      return res.status(400).json({ error: "필수값 누락" });
+    const updateData = {};
+
+    if (name !== undefined) {
+      if (
+        typeof name !== "string" ||
+        name.trim().length < 1 ||
+        name.trim().length > 10
+      ) {
+        return res
+          .status(400)
+          .json({ error: "상품명은 10자 이내로 입력해주세요." });
+      }
+      updateData.name = name.trim();
+    }
+    if (description !== undefined) {
+      if (
+        typeof description !== "string" ||
+        description.trim().length < 10 ||
+        description.trim().length > 100
+      ) {
+        return res
+          .status(400)
+          .json({ error: "상품 설명은 10 ~ 100자 사이로 입력해주세요." });
+      }
+      updateData.description = description.trim();
+    }
+    if (price !== undefined) {
+      const priceNumber = Number(price);
+      if (isNaN(priceNumber) || priceNumber < 0) {
+        return res.status(400).json({ error: "가격은 0 이상이어야 합니다." });
+      }
+      updateData.price = priceNumber;
+    }
+    if (tags !== undefined) {
+      if (
+        !Array.isArray(tags) ||
+        !tags.every(tag => typeof tag === "string" && tag.trim().length <= 5)
+      ) {
+        return res
+          .status(400)
+          .json({ error: "태그는 각각 5글자 이내의 문자열이어야 합니다." });
+      }
+      updateData.tags = tags.map(tag => tag.trim());
     }
     const product = await prisma.product.update({
       where: { id: req.params.id },
-      data: { name, description, price, tags },
+      data: updateData,
     });
     res.json(product);
   } catch (err) {

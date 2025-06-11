@@ -50,12 +50,16 @@ router.post("/products/:productId/comments", async (req, res) => {
   try {
     const { productId } = req.params;
     const { content } = req.body;
-    if (!content) {
-      return res.status(400).json({ error: "필수값 누락" });
+    if (
+      typeof content !== "string" ||
+      content.trim().length < 1 ||
+      content.trim().length > 30
+    ) {
+      return res.status(400).json({ error: "댓글은 30자 이내로 입력해주세요" });
     }
     const comment = await prisma.comment.create({
       data: {
-        content,
+        content: content.trim(),
         productId,
       },
       select: {
@@ -76,12 +80,16 @@ router.post("/article/:articleId/comments", async (req, res) => {
   try {
     const { articleId } = req.params;
     const { content } = req.body;
-    if (!content) {
-      return res.status(400).json({ error: "필수값 누락" });
+    if (
+      typeof content !== "string" ||
+      content.trim().length < 1 ||
+      content.trim().length > 30
+    ) {
+      return res.status(400).json({ error: "댓글은 30자 이내로 입력해주세요" });
     }
     const comment = await prisma.comment.create({
       data: {
-        content,
+        content: content.trim(),
         articleId,
       },
       select: {
@@ -101,12 +109,16 @@ router.post("/article/:articleId/comments", async (req, res) => {
 router.patch("/comments/:id", async (req, res) => {
   try {
     const { content } = req.body;
-    if (!content) {
-      return res.status(400).json({ error: "필수값 누락" });
+    if (
+      typeof content !== "string" ||
+      content.trim().length < 1 ||
+      content.trim().length > 30
+    ) {
+      return res.status(400).json({ error: "댓글은 30자 이내로 입력해주세요" });
     }
     const comment = await prisma.comment.update({
       where: { id: req.params.id },
-      data: { content },
+      data: { content: content.trim() },
     });
     res.json(comment);
   } catch (err) {
