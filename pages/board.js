@@ -1,6 +1,16 @@
+import ArticleList from "@/components/ArticleList";
+import axios from "@/lib/axios";
 import Link from "next/link";
 
-export default function Board() {
+export async function getStaticProps(content) {
+  const res = await axios.get("/article");
+
+  const articles = res.data.list;
+
+  return { props: { articles } };
+}
+
+export default function Board({ articles }) {
   return (
     <div style={{ marginTop: 68 }}>
       <div>
@@ -23,6 +33,7 @@ export default function Board() {
         </div>
         <div>
           <h1>게시글 리스트 5개</h1>
+          <ArticleList articles={articles} />
         </div>
         <div>
           <h1>페이지네이션</h1>
