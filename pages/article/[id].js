@@ -3,6 +3,7 @@ import CommentList from "@/components/CommentList";
 import formatDate from "@/lib/formatDate";
 import axios from "@/lib/axios";
 import { useState } from "react";
+import Link from "next/link";
 
 export const getServerSideProps = async context => {
   const articleId = context.params["id"];
@@ -52,6 +53,7 @@ export default function Article({ article, comments: serverComments }) {
       <div>
         <CommentList comments={comments} />
       </div>
+      <Link href="/board">목록으로 돌아가기</Link>
     </div>
   );
 }
