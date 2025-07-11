@@ -2,6 +2,9 @@ import ArticleList from "@/components/ArticleList";
 import axios from "@/lib/axios";
 import Link from "next/link";
 import styles from "@/styles/board.module.css";
+import Pagination from "@/components/Pagination";
+import { useMemo, useState } from "react";
+import DropDownButton from "@/components/DropDownButton";
 
 export async function getStaticProps() {
   const res = await axios.get("/article");
@@ -12,6 +15,25 @@ export async function getStaticProps() {
 }
 
 export default function Board({ articles }) {
+  const [page, setPage] = useState(1);
+  const perPage = 5;
+  const [sort, setSort] = useState("recent");
+
+  const sortedArticles = useMemo(() => {
+    if (sort === "like") {
+      return [...articles].sort((a, b) => b.like - a.like);
+    } else {
+      return [...articles].sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+    }
+  });
+  const totalPages = Math.ceil(sortedArticles.length / perPage);
+  const paginatedArticles = sortedArticles.slice(
+    (page - 1) * perPage,
+    page * perPage
+  );
+
   return (
     <div className={styles.area}>
       <div className={styles.bestBox}>
@@ -32,16 +54,17 @@ export default function Board({ articles }) {
             className={styles.input}
             placeholder="검색할 상품을 입력해주세요"
           />
-          <section>
-            <option>최신순</option>
-            <option>좋아요순</option>
-          </section>
+          <DropDownButton sort={sort} setSort={setSort} />
         </div>
         <div className={styles.listBox}>
-          <ArticleList articles={articles} />
+          <ArticleList articles={paginatedArticles} />
         </div>
         <div>
-          <h1>페이지네이션</h1>
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            onPageChange={setPage}
+          />
         </div>
       </div>
     </div>
