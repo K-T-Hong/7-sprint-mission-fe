@@ -1,13 +1,17 @@
 import Link from "next/link";
+import styles from "./BestArticles.module.css";
 import formatDate from "@/lib/formatDate";
-import styles from "./ArticleList.module.css";
 
-export default function ArticleList({ articles }) {
+export default function BestArticles({ articles }) {
   return (
-    <ul>
-      {articles?.map(article => (
-        <li key={article.id}>
+    <ul className={styles.range}>
+      {articles?.map((article, idx) => (
+        <li
+          key={article.id}
+          className={`${styles["best-item"]} ${styles[`best-item-${idx + 1}`]}`}
+        >
           <Link className={styles.area} href={`/article/${article.id}`}>
+            <div className={styles.badge} />
             <div className={styles.titleBox}>
               <span className={styles.title}>{article.title}</span>
               <div className={styles.imgBox}>
@@ -16,16 +20,15 @@ export default function ArticleList({ articles }) {
             </div>
             <div className={styles.textBox}>
               <div className={styles.userBox}>
-                <div className={styles.userIc} />
                 <span className={styles.name}>작성자닉네임</span>
-                <span className={styles.date}>
-                  {formatDate(article.createdAt)}
-                </span>
+                <div className={styles.likeBox}>
+                  <div className={styles.likeImg} />
+                  <span className={styles.likeNum}>9999+</span>
+                </div>
               </div>
-              <div className={styles.likeBox}>
-                <div className={styles.likeImg} />
-                <span className={styles.likeNum}>9999+</span>
-              </div>
+              <span className={styles.date}>
+                {formatDate(article.createdAt)}
+              </span>
             </div>
           </Link>
         </li>

@@ -9,7 +9,7 @@ button,
 input,
 select,
 textarea {
-  font-family: inherit;
+  font-family: "Pretendard";
 }
 
 :root {
@@ -21,6 +21,7 @@ textarea {
   --Secondary-900: #111827;
   --Primary-100: #3692ff;
   --Primary-200: #2f80ed;
+  --Cool-Gray-50: #f9fafb;
   --Cool-Gray-100: #f3f4f6;
   --Cool-Gray-200: #e5e7eb;
   --Cool-Gray-400: #9ca3af;

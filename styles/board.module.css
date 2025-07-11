@@ -15,6 +15,7 @@
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  margin: 24px 0;
 }
 
 .listTitleBox {
@@ -60,8 +61,13 @@
   height: 42px;
   padding: 9px 20px 9px 16px;
   background-color: var(--Secondary-100);
-  border: none;
+  border: 1px solid transparent;
   border-radius: 12px;
+  transition: border 0.2s;
+}
+.input:focus {
+  border: 1px solid var(--Primary-100);
+  outline: none;
 }
 
 @media (min-width: 744px) and (max-width: 1199px) {
@@ -71,9 +77,27 @@
   .listTitleBox {
     margin-bottom: 48px;
   }
+  .listOption {
+    margin-bottom: 40px;
+  }
   .input {
     width: 560px;
   }
 }
 @media (min-width: 375px) and (max-width: 743px) {
+  .area {
+    max-width: 343px;
+  }
+  .bestTitle {
+    margin: 16px 0;
+  }
+  .listTitleBox {
+    margin-bottom: 16px;
+  }
+  .listOption {
+    margin-bottom: 16px;
+  }
+  .input {
+    width: 288px;
+  }
 }

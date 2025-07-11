@@ -5,42 +5,51 @@ import styles from "@/styles/board.module.css";
 import Pagination from "@/components/Pagination";
 import { useMemo, useState } from "react";
 import DropDownButton from "@/components/DropDownButton";
+import SearchInput from "@/components/SearchInput";
+import BestArticles from "@/components/BestArticles";
 
 export async function getStaticProps() {
   const res = await axios.get("/article");
-
   const articles = res.data.list;
-
   return { props: { articles } };
 }
 
 export default function Board({ articles }) {
   const [page, setPage] = useState(1);
-  const perPage = 5;
+  const pageSize = 5;
   const [sort, setSort] = useState("recent");
+  const [keyword, setKeyword] = useState("");
 
-  const sortedArticles = useMemo(() => {
+  const filteredArticles = useMemo(() => {
+    const filtered = articles.filter(article =>
+      article.title.toLowerCase().includes(keyword.toLowerCase())
+    );
     if (sort === "like") {
-      return [...articles].sort((a, b) => b.like - a.like);
+      return [...filtered].sort((a, b) => b.like - a.like);
     } else {
-      return [...articles].sort(
+      return [...filtered].sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );
     }
-  });
-  const totalPages = Math.ceil(sortedArticles.length / perPage);
-  const paginatedArticles = sortedArticles.slice(
-    (page - 1) * perPage,
-    page * perPage
+  }, [articles, sort, keyword]);
+
+  const newestArticle = useMemo(() => {
+    return [...articles]
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .slice(0, 3);
+  }, [articles]);
+
+  const totalPages = Math.ceil(filteredArticles.length / pageSize);
+  const paginatedArticles = filteredArticles.slice(
+    (page - 1) * pageSize,
+    page * pageSize
   );
 
   return (
     <div className={styles.area}>
       <div className={styles.bestBox}>
         <h1 className={styles.bestTitle}>베스트 게시글</h1>
-        <div className={styles.bestArticle}>
-          <h1>일단 최신순 3개 개시글 시간되면 좋아요 순으로 변경</h1>
-        </div>
+        <BestArticles articles={newestArticle} />
       </div>
       <div className={styles.articleList}>
         <div className={styles.listTitleBox}>
@@ -50,8 +59,10 @@ export default function Board({ articles }) {
           </Link>
         </div>
         <div className={styles.listOption}>
-          <input
+          <SearchInput
             className={styles.input}
+            value={keyword}
+            onChange={e => setKeyword(e.target.value)}
             placeholder="검색할 상품을 입력해주세요"
           />
           <DropDownButton sort={sort} setSort={setSort} />

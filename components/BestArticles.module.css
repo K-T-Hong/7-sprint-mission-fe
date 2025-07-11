@@ -1,0 +1,160 @@
+.range {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+.best-item-1,
+.best-item-2,
+.best-item-3 {
+  display: block;
+}
+
+.area {
+  width: 384px;
+  height: 169px;
+  display: flex;
+  flex-direction: column;
+  padding: 0 24px;
+  background-color: var(--Cool-Gray-50);
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.badge {
+  width: 102px;
+  height: 30px;
+  background-image: url("/img_badge.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-bottom: 16px;
+}
+.titleBox {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  gap: 8px;
+}
+
+.title {
+  color: var(--Secondary-800);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 32px;
+}
+
+.imgBox {
+  width: 72px;
+  height: 72px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid var(--Cool-Gray-100);
+  border-radius: 8px;
+}
+.img {
+  width: 48px;
+  height: 45px;
+  background-image: url("/temporary_img.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.textBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.userBox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.name {
+  color: var(--Secondary-600);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.likeBox {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 4px;
+}
+
+.likeImg {
+  width: 16px;
+  height: 16px;
+  background-image: url("/ic_like.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.likeNum {
+  color: var(--Cool-Gray-500);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px;
+}
+
+.date {
+  color: var(--Secondary-400);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+@media (min-width: 744px) and (max-width: 1199px) {
+  .range {
+    margin-bottom: 24px;
+  }
+  .best-item-3 {
+    display: none;
+  }
+  .area {
+    width: 340px;
+    height: 198px;
+    padding-bottom: 16px;
+  }
+  .titleBox {
+    margin-bottom: 40px;
+    gap: 40px;
+  }
+  .title {
+    font-size: 16px;
+    line-height: 26px;
+  }
+}
+@media (min-width: 375px) and (max-width: 743px) {
+  .range {
+    margin-bottom: 24px;
+  }
+  .best-item-2,
+  .best-item-3 {
+    display: none;
+  }
+  .area {
+    width: 343px;
+    height: 198px;
+    padding-bottom: 16px;
+  }
+  .titleBox {
+    margin-bottom: 40px;
+    gap: 40px;
+  }
+  .title {
+    font-size: 16px;
+    line-height: 26px;
+  }
+}
