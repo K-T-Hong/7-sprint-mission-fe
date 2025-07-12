@@ -1,5 +1,6 @@
 import axios from "@/lib/axios";
 import { useState } from "react";
+import styles from "./CommentInput.module.css";
 
 export default function CommentInput({ articleId, onAdd }) {
   const [content, setContent] = useState("");
@@ -24,16 +25,21 @@ export default function CommentInput({ articleId, onAdd }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label>댓글달기</label>
-      <input
-        value={content}
-        onChange={e => setContent(e.target.value)}
-        disabled={loading}
-        placeholder="댓글을 입력해주세요."
-      />
-      <button type="submit" disabled={loading}>
-        {loading ? "등록중.." : "등록"}
-      </button>
+      <div className={styles.area}>
+        <label className={styles.label}>댓글달기</label>
+        <textarea
+          className={styles.textarea}
+          value={content}
+          onChange={e => setContent(e.target.value)}
+          disabled={loading}
+          placeholder="댓글을 입력해주세요."
+        />
+        <div className={styles.btnArea}>
+          <button className={styles.btn} type="submit" disabled={loading}>
+            {loading ? "등록중.." : "등록"}
+          </button>
+        </div>
+      </div>
     </form>
   );
 }

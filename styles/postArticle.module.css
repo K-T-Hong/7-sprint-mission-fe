@@ -34,6 +34,7 @@
   font-style: normal;
   font-weight: 600;
   line-height: 26px;
+  cursor: pointer;
 }
 
 .inputBox {
@@ -90,10 +91,16 @@
   .area {
     max-width: 696px;
   }
+  .titleBox {
+    margin-top: 16px;
+  }
 }
 @media (min-width: 375px) and (max-width: 743px) {
   .area {
     max-width: 345px;
+  }
+  .titleBox {
+    margin: 16px 0 24px;
   }
   .label {
     font-size: 14px;

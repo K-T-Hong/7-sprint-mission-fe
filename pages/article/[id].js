@@ -4,6 +4,7 @@ import formatDate from "@/lib/formatDate";
 import axios from "@/lib/axios";
 import { useState } from "react";
 import Link from "next/link";
+import styles from "@/styles/[id].module.css";
 
 export const getServerSideProps = async context => {
   const articleId = context.params["id"];
@@ -41,19 +42,35 @@ export default function Article({ article, comments: serverComments }) {
   }
 
   return (
-    <div>
-      <div style={{ marginTop: 68 }}>
-        <span>{article.title}</span>
-        <span>{formatDate(article.createdAt)}</span>
-        <h2>{article.content}</h2>
+    <div className={styles.area}>
+      <div className={styles.textBox}>
+        <div className={styles.titleBox}>
+          <span className={styles.title}>{article.title}</span>
+          <span>수정삭제드롭다운</span>
+        </div>
+        <div className={styles.etcBox}>
+          <div className={styles.userBox}>
+            <div className={styles.userIc} />
+            <span className={styles.name}>작성자닉네임</span>
+            <span className={styles.date}>{formatDate(article.createdAt)}</span>
+          </div>
+          <div className={styles.likeBox}>
+            <div className={styles.likeImg} />
+            <span className={styles.likeNum}>9999+</span>
+          </div>
+        </div>
       </div>
+      <span className={styles.text}>{article.content}</span>
       <div>
         <CommentInput articleId={article.id} onAdd={fetchComments} />
       </div>
       <div>
         <CommentList comments={comments} />
       </div>
-      <Link href="/board">목록으로 돌아가기</Link>
+      <Link className={styles.btn} href="/board">
+        목록으로 돌아가기
+        <span className={styles.img} />
+      </Link>
     </div>
   );
 }

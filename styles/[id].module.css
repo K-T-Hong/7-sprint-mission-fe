@@ -1,0 +1,183 @@
+.area {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 68px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.textBox {
+  width: 100%;
+  margin: 34px 0 24px;
+  border-bottom: 1px solid var(--Cool-Gray-200);
+}
+
+.titleBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.title {
+  color: var(--Secondary-800);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 32px;
+}
+
+.etcBox {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 16px 0;
+}
+
+.userBox {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-right: 32px;
+  border-right: 1px solid var(--Cool-Gray-200);
+}
+
+.userIc {
+  width: 40px;
+  height: 40px;
+  background-image: url("/ic_user.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.name {
+  color: var(--Secondary-600);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+  padding: 0 8px 0 16px;
+}
+
+.date {
+  color: var(--Cool-Gray-400);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.likeBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--Secondary-200);
+  border-radius: 35px;
+  padding: 4px 12px;
+  margin-left: 32px;
+  gap: 4px;
+}
+.likeImg {
+  width: 32px;
+  height: 32px;
+  background-image: url("/ic_like.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.likeNum {
+  color: var(--Cool-Gray-500);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 26px;
+}
+
+.text {
+  color: var(--Secondary-800);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px;
+  margin-bottom: 32px;
+}
+
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 240px;
+  height: 48px;
+  margin: 64px auto 40px;
+  padding: 12px 0;
+  background-color: var(--Primary-100);
+  border: none;
+  border-radius: 40px;
+  color: var(--Cool-Gray-100);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 26px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.img {
+  width: 19px;
+  height: 16px;
+  background-image: url("/ic_return.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding-left: 8px;
+}
+
+@media (min-width: 744px) and (max-width: 1199px) {
+  .area {
+    max-width: 696px;
+  }
+  .textBox {
+    margin: 26px 0 16px;
+  }
+  .text {
+    font-size: 16px;
+  }
+  .btn {
+    margin: 56px auto 40px;
+  }
+}
+@media (min-width: 375px) and (max-width: 743px) {
+  .area {
+    max-width: 344px;
+  }
+  .textBox {
+    margin: 24px 0 16px;
+  }
+  .userBox {
+    padding-right: 16px;
+  }
+  .name {
+    padding-right: 2px;
+  }
+  .likeBox {
+    margin-left: 16px;
+  }
+  .likeImg {
+    width: 24px;
+    height: 24px;
+  }
+  .likeNum {
+    font-size: 14px;
+  }
+
+  .text {
+    font-size: 16px;
+  }
+  .btn {
+    margin: 40px auto 40px;
+  }
+}
