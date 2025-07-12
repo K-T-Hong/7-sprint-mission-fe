@@ -4,9 +4,7 @@ export default function Footer() {
   return (
     <footer className={styles.footerArea}>
       <div className={styles.footerContent}>
-        <div className="codeit">
-          <p>©codeit - 2024</p>
-        </div>
+        <span className={styles.codeit}>©codeit - 2024</span>
         <div className={styles.linkPage}>
           <p>Privacy Policy</p>
           <p>FAQ</p>
