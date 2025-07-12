@@ -1,5 +1,6 @@
 import axios from "@/lib/axios";
 import { useState } from "react";
+import styles from "@/styles/postArticle.module.css";
 
 export default function PostArticle() {
   const [title, setTitle] = useState("");
@@ -30,24 +31,26 @@ export default function PostArticle() {
     }
   }
   return (
-    <div style={{ marginTop: 68 }}>
+    <div className={styles.area}>
       <form onSubmit={handleSubmit}>
-        <div>
-          <h1>게시글 쓰기</h1>
-          <button type="submit" disabled={loading}>
+        <div className={styles.titleBox}>
+          <h1 className={styles.title}>게시글 쓰기</h1>
+          <button className={styles.btn} type="submit" disabled={loading}>
             {loading ? "등록중..." : "등록"}
           </button>
         </div>
-        <div>
-          <label>제목</label>
+        <div className={styles.inputBox}>
+          <label className={styles.label}>제목</label>
           <input
+            className={styles.input}
             value={title}
             onChange={e => setTitle(e.target.value)}
             disabled={loading}
             placeholder="제목을 입력해주세요"
           />
-          <label>내용</label>
+          <label className={styles.label}>내용</label>
           <textarea
+            className={styles.textArea}
             value={content}
             onChange={e => setContent(e.target.value)}
             disabled={loading}

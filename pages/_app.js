@@ -5,10 +5,12 @@ import "@/styles/globals.css";
 
 export default function App({ Component, pageProps }) {
   return (
-    <>
+    <div className="layout">
       <Navbar />
-      <Component {...pageProps} />
+      <main className="mainContent">
+        <Component {...pageProps} />
+      </main>
       <Footer />
-    </>
+    </div>
   );
 }

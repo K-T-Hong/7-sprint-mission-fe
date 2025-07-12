@@ -29,3 +29,12 @@ textarea {
   --Cool-Gray-600: #4b5563;
   --error-red: #f74747;
 }
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.mainContent {
+  flex: 1;
+}
