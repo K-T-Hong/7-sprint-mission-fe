@@ -4,6 +4,9 @@ import { useRouter } from "next/router";
 
 export default function Navbar() {
   const router = useRouter();
+  const path = router.pathname;
+
+  const isArticlesActive = path.startsWith("/articles");
 
   return (
     <nav className={styles.navArea}>
@@ -11,9 +14,9 @@ export default function Navbar() {
         <div className={styles.box}>
           <Link href="/" className={styles.logo} />
           <Link
-            href="/board"
+            href="/articles"
             className={`${styles.navbarPage} ${
-              router.pathname === "/board" ? styles.active : ""
+              isArticlesActive ? styles.active : ""
             }`}
           >
             자유게시판

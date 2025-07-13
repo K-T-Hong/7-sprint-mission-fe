@@ -10,7 +10,7 @@ export default function BestArticles({ articles }) {
           key={article.id}
           className={`${styles["best-item"]} ${styles[`best-item-${idx + 1}`]}`}
         >
-          <Link className={styles.area} href={`/article/${article.id}`}>
+          <Link className={styles.area} href={`/articles/${article.id}`}>
             <div className={styles.badge} />
             <div className={styles.titleBox}>
               <span className={styles.title}>{article.title}</span>

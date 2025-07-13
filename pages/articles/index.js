@@ -1,7 +1,7 @@
 import ArticleList from "@/components/ArticleList";
 import axios from "@/lib/axios";
 import Link from "next/link";
-import styles from "@/styles/board.module.css";
+import styles from "@/styles/articles.module.css";
 import Pagination from "@/components/Pagination";
 import { useMemo, useState } from "react";
 import DropDownButton from "@/components/DropDownButton";
@@ -54,7 +54,7 @@ export default function Board({ articles }) {
       <div className={styles.articleList}>
         <div className={styles.listTitleBox}>
           <h1 className={styles.listTitle}>게시글</h1>
-          <Link className={styles.postBtn} href="/postArticle">
+          <Link className={styles.postBtn} href="/articles/write">
             글쓰기
           </Link>
         </div>

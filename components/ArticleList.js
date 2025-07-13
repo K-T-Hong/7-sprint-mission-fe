@@ -7,7 +7,7 @@ export default function ArticleList({ articles }) {
     <ul>
       {articles?.map(article => (
         <li key={article.id}>
-          <Link className={styles.area} href={`/article/${article.id}`}>
+          <Link className={styles.area} href={`/articles/${article.id}`}>
             <div className={styles.titleBox}>
               <span className={styles.title}>{article.title}</span>
               <div className={styles.imgBox}>

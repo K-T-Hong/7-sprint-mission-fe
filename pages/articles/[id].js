@@ -6,6 +6,7 @@ import { useState } from "react";
 import Link from "next/link";
 import styles from "@/styles/[id].module.css";
 import EditDropDownButton from "@/components/EditDropDownButton";
+import { useRouter } from "next/router";
 
 export const getServerSideProps = async context => {
   const articleId = context.params["id"];
@@ -32,6 +33,22 @@ export const getServerSideProps = async context => {
 
 export default function Article({ article, comments: serverComments }) {
   const [comments, setComments] = useState(serverComments);
+  const router = useRouter();
+
+  function handleEdit() {
+    router.push(`/articles/edit/${article.id}`);
+  }
+
+  async function handleDelete() {
+    if (!window.confirm("정말 삭제하시겠습니까?")) return;
+    try {
+      await axios.delete(`/article/${article.id}`);
+      alert("삭제되었습니다.");
+      router.push("/articles");
+    } catch (e) {
+      alert("삭제에 실패했습니다.");
+    }
+  }
 
   async function fetchComments() {
     try {
@@ -47,7 +64,7 @@ export default function Article({ article, comments: serverComments }) {
       <div className={styles.textBox}>
         <div className={styles.titleBox}>
           <span className={styles.title}>{article.title}</span>
-          <EditDropDownButton />
+          <EditDropDownButton onEdit={handleEdit} onDelete={handleDelete} />
         </div>
         <div className={styles.etcBox}>
           <div className={styles.userBox}>
@@ -68,7 +85,7 @@ export default function Article({ article, comments: serverComments }) {
       <div>
         <CommentList comments={comments} />
       </div>
-      <Link className={styles.btn} href="/board">
+      <Link className={styles.btn} href="/articles">
         목록으로 돌아가기
         <span className={styles.img} />
       </Link>
