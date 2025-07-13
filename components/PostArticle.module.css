@@ -34,12 +34,23 @@
   font-style: normal;
   font-weight: 600;
   line-height: 26px;
+}
+
+.btn.active {
+  background: var(--Primary-100);
   cursor: pointer;
 }
 
 .inputBox {
   display: flex;
   flex-direction: column;
+}
+.labelArea {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
 }
 
 .label {
@@ -48,7 +59,13 @@
   font-style: normal;
   font-weight: 700;
   line-height: 26px;
-  margin-bottom: 12px;
+}
+.length {
+  color: var(--Secondary-400);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 26px;
 }
 
 .input {
@@ -87,6 +104,24 @@
   outline: none;
 }
 
+.input.error,
+.textArea.error {
+  border: 1px solid var(--error-red);
+}
+
+.length.error {
+  color: var(--error-red);
+}
+
+.errorText {
+  color: var(--error-red);
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 26px;
+  margin-bottom: 10px;
+}
+
 @media (min-width: 744px) and (max-width: 1199px) {
   .area {
     max-width: 696px;
@@ -104,5 +139,12 @@
   }
   .label {
     font-size: 14px;
+  }
+  .length {
+    font-size: 12px;
+  }
+  .errorText {
+    font-size: 12px;
+    margin-bottom: 5px;
   }
 }

@@ -2,11 +2,18 @@ import axios from "@/lib/axios";
 import { useEffect, useState } from "react";
 import styles from "./PostArticle.module.css";
 import { useRouter } from "next/router";
+import Toast from "./Toast";
+import Modal from "./Modal";
+
+const TITLE_MAX = 30;
+const CONTENT_MAX = 1000;
 
 export default function PostArticle({ article }) {
   const [title, setTitle] = useState(article?.title || "");
   const [content, setContent] = useState(article?.content || "");
   const [loading, setLoading] = useState(false);
+  const [titleError, setTitleError] = useState("");
+  const [contentError, setContentError] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -16,31 +23,52 @@ export default function PostArticle({ article }) {
     }
   }, [article]);
 
+  useEffect(() => {
+    if (title.length > TITLE_MAX) {
+      setTitleError("제목은 최대 30글자까지 입력 가능합니다.");
+    } else {
+      setTitleError("");
+    }
+  }, [title]);
+
+  useEffect(() => {
+    if (content.length > CONTENT_MAX) {
+      setContentError("내용은 최대 1000글자까지 입력 가능합니다.");
+    } else {
+      setContentError("");
+    }
+  }, [content]);
+
+  const isFormValid =
+    title.trim().length > 0 &&
+    content.trim().length > 0 &&
+    !titleError &&
+    !contentError &&
+    !loading;
+
+  const [toastMsg, setToastMsg] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMsg, setModalMsg] = useState("");
+
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!title.trim()) {
-      alert("제목을 입력하세요.");
-      return;
-    }
-    if (!content.trim()) {
-      alert("내용을 입력하세요.");
-      return;
-    }
+    if (!isFormValid) return;
 
     setLoading(true);
     try {
       if (article) {
         await axios.patch(`/article/${article.id}`, { title, content });
-        alert("게시글이 수정되었습니다.");
-        router.push(`/articles/${article.id}`);
+        setToastMsg("게시글 수정 완료");
+        setTimeout(() => router.push(`/articles/${article.id}`), 1200);
       } else {
         const res = await axios.post("/article", { title, content });
-        alert("게시글이 등록되었습니다.");
+        setToastMsg("게시글 등록 완료");
         const newId = res.data.id;
-        router.push(`/articles/${newId}`);
+        setTimeout(() => router.push(`/articles/${newId}`), 1200);
       }
     } catch (err) {
-      alert(article ? "게시글 수정 실패" : "게시글 등록 실패");
+      setModalMsg(article ? "게시글 수정 실패" : "게시글 등록 실패");
+      setModalOpen(true);
       console.error("에러:", err.response?.data || err.message);
     } finally {
       setLoading(false);
@@ -54,35 +82,63 @@ export default function PostArticle({ article }) {
           <h1 className={styles.title}>
             {article ? "게시글 수정" : "게시글 작성"}
           </h1>
-          <button className={styles.btn} type="submit" disabled={loading}>
+          <button
+            className={`${styles.btn} ${isFormValid ? styles.active : ""}`}
+            type="submit"
+            disabled={!isFormValid}
+          >
             {loading
               ? article
-                ? "수정중..."
-                : "등록중..."
+                ? "수정중"
+                : "등록중"
               : article
               ? "수정"
               : "등록"}
           </button>
         </div>
         <div className={styles.inputBox}>
-          <label className={styles.label}>제목</label>
+          <div className={styles.labelArea}>
+            <label className={styles.label}>제목</label>
+            <span
+              className={`${styles.length} ${titleError ? styles.error : ""}`}
+            >
+              {title.length} / {TITLE_MAX}
+            </span>
+          </div>
           <input
-            className={styles.input}
+            className={`${styles.input} ${titleError ? styles.error : ""}`}
             value={title}
             onChange={e => setTitle(e.target.value)}
             disabled={loading}
             placeholder="제목을 입력해주세요"
           />
-          <label className={styles.label}>내용</label>
+          {titleError && <div className={styles.errorText}>{titleError}</div>}
+          <div className={styles.labelArea}>
+            <label className={styles.label}>내용</label>
+            <span
+              className={`${styles.length} ${contentError ? styles.error : ""}`}
+            >
+              {content.length} / {CONTENT_MAX}
+            </span>
+          </div>
           <textarea
-            className={styles.textArea}
+            className={`${styles.textArea} ${contentError ? styles.error : ""}`}
             value={content}
             onChange={e => setContent(e.target.value)}
             disabled={loading}
             placeholder="내용을 입력해주세요"
           />
+          {contentError && (
+            <div className={styles.errorText}>{contentError}</div>
+          )}
         </div>
       </form>
+      <Toast message={toastMsg} onClose={() => setToastMsg("")} />
+      <Modal
+        open={modalOpen}
+        message={modalMsg}
+        onClose={() => setModalOpen(false)}
+      />
     </div>
   );
 }

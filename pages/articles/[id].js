@@ -7,6 +7,9 @@ import Link from "next/link";
 import styles from "@/styles/[id].module.css";
 import EditDropDownButton from "@/components/EditDropDownButton";
 import { useRouter } from "next/router";
+import DeleteModal from "@/components/DeleteModal";
+import Toast from "@/components/Toast";
+import Modal from "@/components/Modal";
 
 export const getServerSideProps = async context => {
   const articleId = context.params["id"];
@@ -33,26 +36,34 @@ export const getServerSideProps = async context => {
 
 export default function Article({ article, comments: serverComments }) {
   const [comments, setComments] = useState(serverComments);
+  const [toastMsg, setToastMsg] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMsg, setModalMsg] = useState("");
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const router = useRouter();
 
   function handleEdit() {
     router.push(`/articles/edit/${article.id}`);
   }
 
-  async function handleDelete() {
-    if (!window.confirm("정말 삭제하시겠습니까?")) return;
+  function handleDeleteModal() {
+    setDeleteModalOpen(true);
+  }
+
+  async function doDelete() {
     try {
       await axios.delete(`/article/${article.id}`);
-      alert("삭제되었습니다.");
+      setToastMsg("삭제되었습니다.");
       router.push("/articles");
     } catch (e) {
-      alert("삭제에 실패했습니다.");
+      setModalMsg("삭제에 실패했습니다.");
+      setModalOpen(true);
     }
   }
 
   async function fetchComments() {
     try {
-      const res = await axios.get(`/article/${articleId}/comments`);
+      const res = await axios.get(`/article/${article.id}/comments`);
       setComments(Array.isArray(res.data) ? res.data : []);
     } catch {
       setComments([]);
@@ -64,7 +75,10 @@ export default function Article({ article, comments: serverComments }) {
       <div className={styles.textBox}>
         <div className={styles.titleBox}>
           <span className={styles.title}>{article.title}</span>
-          <EditDropDownButton onEdit={handleEdit} onDelete={handleDelete} />
+          <EditDropDownButton
+            onEdit={handleEdit}
+            onDelete={handleDeleteModal}
+          />
         </div>
         <div className={styles.etcBox}>
           <div className={styles.userBox}>
@@ -83,12 +97,24 @@ export default function Article({ article, comments: serverComments }) {
         <CommentInput articleId={article.id} onAdd={fetchComments} />
       </div>
       <div>
-        <CommentList comments={comments} />
+        <CommentList comments={comments} onRefresh={fetchComments} />
       </div>
       <Link className={styles.btn} href="/articles">
         목록으로 돌아가기
         <span className={styles.img} />
       </Link>
+      <Toast message={toastMsg} onClose={() => setToastMsg("")} />
+      <Modal
+        open={modalOpen}
+        message={modalMsg}
+        onClose={() => setModalOpen(false)}
+      />
+      <DeleteModal
+        open={deleteModalOpen}
+        message="게시글을 삭제하시겠습니까?"
+        onCancel={() => setDeleteModalOpen(false)}
+        onConfirm={doDelete}
+      />
     </div>
   );
 }

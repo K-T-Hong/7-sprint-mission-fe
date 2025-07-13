@@ -1,0 +1,26 @@
+.toast {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%);
+  background: #ffffff;
+  color: var(--Secondary-800);
+  padding: 14px 32px;
+  border: 1px solid var(--Primary-100);
+  border-radius: 10px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+  font-size: 16px;
+  z-index: 10000;
+  opacity: 0.98;
+  animation: toast-in 0.3s;
+}
+@keyframes toast-in {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(30px);
+  }
+  100% {
+    opacity: 0.98;
+    transform: translateX(-50%) translateY(0);
+  }
+}

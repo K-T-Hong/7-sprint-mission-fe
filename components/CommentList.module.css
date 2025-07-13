@@ -19,6 +19,61 @@
   gap: 4px;
 }
 
+.textArea {
+  width: 80%;
+  height: 40px;
+  margin-top: 2px;
+  padding: 6px 10px;
+  background-color: #fcfcfc;
+  border: 1px solid var(--Secondary-200);
+  resize: none;
+  color: var(--Secondary-800);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+}
+.textArea:focus {
+  border: 1px solid var(--Primary-100);
+  outline: none;
+}
+.length {
+  color: var(--Secondary-400);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 26px;
+}
+.btnArea {
+  display: flex;
+  gap: 10px;
+}
+.cancel {
+  width: 60px;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--Secondary-200);
+  color: var(--Secondary-600);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 26px;
+  cursor: pointer;
+}
+.save {
+  width: 60px;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--Primary-100);
+  color: #fff;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 26px;
+  cursor: pointer;
+}
 .text {
   color: var(--Secondary-800);
   font-size: 14px;
