@@ -1,6 +1,7 @@
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
 import styles from "./CommentList.module.css";
+import EditDropDownButton from "./EditDropDownButton";
 
 export default function CommentList({ comments }) {
   if (!comments || comments.length === 0)
@@ -21,7 +22,7 @@ export default function CommentList({ comments }) {
         <li className={styles.area} key={comment.id}>
           <div className={styles.textBox}>
             <span className={styles.text}>{comment.content}</span>
-            <span>수정삭제옵션</span>
+            <EditDropDownButton />
           </div>
           <div className={styles.userBox}>
             <div className={styles.userIc} />

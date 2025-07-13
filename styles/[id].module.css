@@ -133,7 +133,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  padding-left: 8px;
+  margin-left: 8px;
 }
 
 @media (min-width: 744px) and (max-width: 1199px) {

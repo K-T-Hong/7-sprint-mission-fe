@@ -5,6 +5,7 @@ import axios from "@/lib/axios";
 import { useState } from "react";
 import Link from "next/link";
 import styles from "@/styles/[id].module.css";
+import EditDropDownButton from "@/components/EditDropDownButton";
 
 export const getServerSideProps = async context => {
   const articleId = context.params["id"];
@@ -46,7 +47,7 @@ export default function Article({ article, comments: serverComments }) {
       <div className={styles.textBox}>
         <div className={styles.titleBox}>
           <span className={styles.title}>{article.title}</span>
-          <span>수정삭제드롭다운</span>
+          <EditDropDownButton />
         </div>
         <div className={styles.etcBox}>
           <div className={styles.userBox}>
