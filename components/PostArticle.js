@@ -22,7 +22,7 @@ export default function PostArticle({ article }) {
   }, [article]);
 
   useEffect(() => {
-    if (title.length > TITLE_MAX) {
+    if (title.trim().length > TITLE_MAX) {
       setTitleError(`제목은 ${TITLE_MAX}자까지 입력 가능합니다.`);
     } else {
       setTitleError("");
@@ -30,7 +30,7 @@ export default function PostArticle({ article }) {
   }, [title]);
 
   useEffect(() => {
-    if (content.length > CONTENT_MAX) {
+    if (content.trim().length > CONTENT_MAX) {
       setContentError(`내용은 ${CONTENT_MAX}자까지 입력 가능합니다.`);
     } else {
       setContentError("");
@@ -100,7 +100,7 @@ export default function PostArticle({ article }) {
             <span
               className={`${styles.length} ${titleError ? styles.error : ""}`}
             >
-              {title.length} / {TITLE_MAX}
+              {title.trim().length} / {TITLE_MAX}
             </span>
           </div>
           <input
@@ -116,7 +116,7 @@ export default function PostArticle({ article }) {
             <span
               className={`${styles.length} ${contentError ? styles.error : ""}`}
             >
-              {content.length} / {CONTENT_MAX}
+              {content.trim().length} / {CONTENT_MAX}
             </span>
           </div>
           <textarea

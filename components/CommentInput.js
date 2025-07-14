@@ -15,7 +15,7 @@ export default function CommentInput({ articleId, onAdd }) {
   const [modalMsg, setModalMsg] = useState("");
 
   useEffect(() => {
-    if (comment.length > COMMENT_MAX) {
+    if (comment.trim().length > COMMENT_MAX) {
       setCommentError(`댓글은 ${COMMENT_MAX}자까지 입력 가능합니다.`);
     } else {
       setCommentError("");
@@ -51,7 +51,7 @@ export default function CommentInput({ articleId, onAdd }) {
           <span
             className={`${styles.length} ${commentError ? styles.error : ""}`}
           >
-            {comment.length} / {COMMENT_MAX}
+            {comment.trim().length} / {COMMENT_MAX}
           </span>
         </div>
         <textarea

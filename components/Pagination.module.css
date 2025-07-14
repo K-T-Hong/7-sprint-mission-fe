@@ -1,6 +1,6 @@
 .area {
   height: 40px;
-  margin-bottom: 140px;
+  margin-bottom: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -33,4 +33,16 @@
   color: var(--Secondary-100);
   background-color: var(--Primary-200);
   border: none;
+}
+
+@media (min-width: 375px) and (max-width: 743px) {
+  .area {
+    margin-bottom: 60px;
+  }
+  .btn {
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
+    font-weight: 500;
+  }
 }

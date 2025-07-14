@@ -7,6 +7,7 @@ export default function Navbar() {
   const path = router.pathname;
 
   const isArticlesActive = path.startsWith("/articles");
+  const isItmesActive = path.startsWith("/items");
 
   return (
     <nav className={styles.navArea}>
@@ -24,7 +25,7 @@ export default function Navbar() {
           <Link
             href="/items"
             className={`${styles.navbarPage} ${
-              router.pathname === "/items" ? styles.active : ""
+              isItmesActive ? styles.active : ""
             }`}
           >
             중고마켓

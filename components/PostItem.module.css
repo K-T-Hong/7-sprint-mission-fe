@@ -1,18 +1,18 @@
-.area {
+.formArea {
   width: 100%;
   max-width: 1200px;
+  margin: 0 auto 50px;
   padding-top: 68px;
-  margin: 0 auto;
 }
 
-.titleBox {
+.titleArea {
   width: 100%;
-  height: 42px;
+  margin: 24px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 24px 0 32px;
 }
+
 .title {
   color: var(--Secondary-800);
   font-size: 20px;
@@ -20,6 +20,7 @@
   font-weight: 700;
   line-height: 32px;
 }
+
 .btn {
   display: flex;
   justify-content: center;
@@ -41,6 +42,12 @@
   cursor: pointer;
 }
 
+.inputArea {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
 .inputBox {
   display: flex;
   flex-direction: column;
@@ -60,7 +67,6 @@
   font-weight: 700;
   line-height: 26px;
 }
-
 .length {
   color: var(--Secondary-400);
   font-size: 14px;
@@ -69,15 +75,15 @@
   line-height: 26px;
 }
 
-.input {
+.input,
+.textArea {
   width: 100%;
   height: 56px;
-  margin-bottom: 24px;
-  padding: 16px 24px;
   background-color: var(--Cool-Gray-100);
   border: 1px solid transparent;
-  border-radius: 12px;
   transition: border 0.2s;
+  border-radius: 12px;
+  padding: 16px 24px;
   color: var(--Secondary-800);
   font-size: 16px;
   font-style: normal;
@@ -85,28 +91,16 @@
   line-height: 26px;
 }
 .textArea {
-  width: 100%;
   height: 282px;
-  padding: 16px 24px;
-  background-color: var(--Cool-Gray-100);
-  border: 1px solid transparent;
-  border-radius: 12px;
-  transition: border 0.2s;
   resize: none;
-  color: var(--Secondary-800);
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 26px;
 }
-.input:focus,
 .input:hover,
-.textArea:focus,
-.textArea:hover {
+.input:focus,
+.textArea:hover,
+.textArea:focus {
   border: 1px solid var(--Primary-100);
   outline: none;
 }
-
 .input::placeholder,
 .textArea::placeholder {
   color: var(--Secondary-400);
@@ -125,26 +119,57 @@
   color: var(--error-red);
 }
 
-.errorText {
+.errorMessage {
   color: var(--error-red);
-  font-size: 15px;
+  font-size: 14px;
   font-style: normal;
-  font-weight: 500;
-  line-height: 26px;
-  margin-bottom: 10px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.inputError,
+.inputError:hover,
+.inputError:focus {
+  border: 1px solid var(--error-red);
+  outline: none;
+}
+
+.tagBoxArea {
+  display: flex;
+  margin-top: 12px;
+  gap: 12px;
+}
+
+.tagBox {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  height: 36px;
+  padding: 6px 12px 6px 16px;
+  border: none;
+  border-radius: 26px;
+  background-color: var(--Cool-Gray-100);
+}
+
+.tagDeleteButton {
+  width: 22px;
+  height: 24px;
+  background-image: url("/ic_X.svg");
+  border: none;
 }
 
 @media (min-width: 744px) and (max-width: 1199px) {
-  .area {
+  .formArea {
     max-width: 696px;
   }
-  .titleBox {
-    margin-top: 16px;
+  .inputArea {
+    gap: 24px;
   }
 }
 @media (min-width: 375px) and (max-width: 743px) {
-  .area {
-    max-width: 345px;
+  .formArea {
+    max-width: 344px;
   }
   .titleBox {
     margin: 16px 0 24px;
@@ -157,6 +182,8 @@
   }
   .errorText {
     font-size: 12px;
-    margin-bottom: 5px;
+  }
+  .inputArea {
+    gap: 20px;
   }
 }

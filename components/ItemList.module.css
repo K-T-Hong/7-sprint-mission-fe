@@ -1,0 +1,71 @@
+.ul {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 한 줄에 5개 */
+  gap: 40px 24px;
+  list-style: none;
+}
+
+.area {
+  width: 221px;
+  height: 317px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-decoration: none;
+}
+.img {
+  width: 100%;
+  height: 221px;
+  background-image: url("https://picsum.photos/250/250");
+  object-fit: cover;
+  background-position: center;
+  border-radius: 8px;
+}
+
+.textBox {
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.name {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--Secondary-800);
+}
+.price {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 26px;
+  color: var(--Secondary-800);
+}
+.like {
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 18px;
+  color: var(--Secondary-800);
+}
+
+@media (min-width: 744px) and (max-width: 1199px) {
+  .ul {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px 16px;
+  }
+}
+@media (min-width: 375px) and (max-width: 743px) {
+  .ul {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px 8px;
+  }
+  .area {
+    width: 168px;
+    height: 267px;
+  }
+  .img {
+    height: 168px;
+  }
+}

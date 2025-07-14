@@ -64,8 +64,22 @@
   border: 1px solid transparent;
   border-radius: 12px;
   transition: border 0.2s;
+  color: var(--Secondary-800);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px;
 }
-.input:focus {
+.input::placeholder {
+  color: var(--Secondary-400);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px;
+}
+
+.input:focus,
+.input:hover {
   border: 1px solid var(--Primary-100);
   outline: none;
 }

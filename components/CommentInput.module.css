@@ -41,6 +41,14 @@
   border-radius: 12px;
   transition: border 0.2s;
   resize: none;
+  color: var(--Secondary-800);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px;
+}
+
+.textArea::placeholder {
   color: var(--Secondary-400);
   font-size: 16px;
   font-style: normal;
@@ -48,7 +56,8 @@
   line-height: 26px;
 }
 
-.textArea:focus {
+.textArea:focus,
+.textArea:hover {
   border: 1px solid var(--Primary-100);
   outline: none;
 }
