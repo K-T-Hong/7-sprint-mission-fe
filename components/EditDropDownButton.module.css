@@ -14,6 +14,9 @@
   font-size: 20px;
   cursor: pointer;
 }
+.btnImg:focus {
+  outline: none;
+}
 .menu {
   width: 140px;
   height: 92px;

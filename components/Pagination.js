@@ -1,6 +1,21 @@
 import styles from "./Pagination.module.css";
 
 export default function Pagination({ page, totalPages, onPageChange }) {
+  const maxPage = 5;
+
+  const half = Math.floor(maxPage / 2);
+  let start = Math.max(1, page - half);
+  let end = start + maxPage - 1;
+
+  if (end > totalPages) {
+    end = totalPages;
+    start = Math.max(1, end - maxPage + 1);
+  }
+
+  const pageNumbers = [];
+  for (let i = start; i <= end; i++) {
+    pageNumbers.push(i);
+  }
   return (
     <div className={styles.area}>
       <button
@@ -10,15 +25,16 @@ export default function Pagination({ page, totalPages, onPageChange }) {
       >
         &lt;
       </button>
-      {Array.from({ length: totalPages }).map((_, idx) => (
+
+      {pageNumbers.map(num => (
         <button
           className={
-            page === idx + 1 ? `${styles.btn} ${styles.active}` : styles.btn
+            page === num ? `${styles.btn} ${styles.active}` : styles.btn
           }
-          key={idx + 1}
-          onClick={() => onPageChange(idx + 1)}
+          key={num}
+          onClick={() => onPageChange(num)}
         >
-          {idx + 1}
+          {num}
         </button>
       ))}
       <button

@@ -8,6 +8,8 @@ import Toast from "./Toast";
 import Modal from "./Modal";
 import DeleteModal from "./DeleteModal";
 
+const COMMENT_MAX = 200;
+
 export default function CommentList({ comments, onRefresh }) {
   const [toastMsg, setToastMsg] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
@@ -35,8 +37,8 @@ export default function CommentList({ comments, onRefresh }) {
       setEditError("댓글 내용을 입력해주세요.");
       return;
     }
-    if (editingValue.length > 200) {
-      setEditError("댓글은 200자 이내로 입력 가능합니다.");
+    if (editingValue.length > COMMENT_MAX) {
+      setEditError(`댓글은 ${COMMENT_MAX}자까지 입력 가능합니다.`);
       return;
     }
     try {
@@ -93,10 +95,9 @@ export default function CommentList({ comments, onRefresh }) {
                     className={styles.textArea}
                     value={editingValue}
                     onChange={e => setEditingValue(e.target.value)}
-                    maxLength={200}
                   />
                   <div className={styles.length}>
-                    {editingValue.length} / 200
+                    {editingValue.length} / {COMMENT_MAX}
                   </div>
                   {editError && <div className={styles.error}>{editError}</div>}
                   <div className={styles.btnArea}>

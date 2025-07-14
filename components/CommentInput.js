@@ -16,7 +16,7 @@ export default function CommentInput({ articleId, onAdd }) {
 
   useEffect(() => {
     if (comment.length > COMMENT_MAX) {
-      setCommentError("댓글은 최대 200글자까지 입력 가능합니다.");
+      setCommentError(`댓글은 ${COMMENT_MAX}자까지 입력 가능합니다.`);
     } else {
       setCommentError("");
     }

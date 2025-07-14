@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import styles from "./DropDownButton.module.css";
 
@@ -9,10 +9,35 @@ const options = [
 
 export default function DropDownButton({ sort, setSort }) {
   const [open, setOpen] = useState(false);
-  const current = options.find(opt => opt.value === sort);
+  const ref = useRef(null);
+  const current = options.find(opt => opt.value === sort) || options[0];
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (ref.current && !ref.current.contains(e.target)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.key === "Escape") {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
-    <div className={styles.dropdown}>
+    <div className={styles.dropdown} ref={ref}>
       <button
         className={styles.btn}
         type="button"

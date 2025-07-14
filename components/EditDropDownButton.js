@@ -13,6 +13,18 @@ export default function EditDropDownButton({ onEdit, onDelete }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.key === "Escape") {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   return (
     <div className={styles.box} ref={ref}>
       <button className={styles.btnImg} onClick={() => setOpen(v => !v)} />

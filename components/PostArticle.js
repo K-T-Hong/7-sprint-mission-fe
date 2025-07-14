@@ -9,23 +9,21 @@ const TITLE_MAX = 30;
 const CONTENT_MAX = 1000;
 
 export default function PostArticle({ article }) {
-  const [title, setTitle] = useState(article?.title || "");
-  const [content, setContent] = useState(article?.content || "");
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
   const [titleError, setTitleError] = useState("");
   const [contentError, setContentError] = useState("");
   const router = useRouter();
 
   useEffect(() => {
-    if (article) {
-      setTitle(article.title);
-      setContent(article.content);
-    }
+    setTitle(article?.title || "");
+    setContent(article?.content || "");
   }, [article]);
 
   useEffect(() => {
     if (title.length > TITLE_MAX) {
-      setTitleError("제목은 최대 30글자까지 입력 가능합니다.");
+      setTitleError(`제목은 ${TITLE_MAX}자까지 입력 가능합니다.`);
     } else {
       setTitleError("");
     }
@@ -33,7 +31,7 @@ export default function PostArticle({ article }) {
 
   useEffect(() => {
     if (content.length > CONTENT_MAX) {
-      setContentError("내용은 최대 1000글자까지 입력 가능합니다.");
+      setContentError(`내용은 ${CONTENT_MAX}자까지 입력 가능합니다.`);
     } else {
       setContentError("");
     }
