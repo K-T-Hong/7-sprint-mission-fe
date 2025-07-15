@@ -4,7 +4,7 @@ import formatDate from "@/lib/formatDate";
 import axios from "@/lib/axios";
 import { useState } from "react";
 import Link from "next/link";
-import styles from "@/styles/[id].module.css";
+import styles from "@/styles/article[id].module.css";
 import EditDropDownButton from "@/components/EditDropDownButton";
 import { useRouter } from "next/router";
 import DeleteModal from "@/components/DeleteModal";
@@ -94,10 +94,19 @@ export default function Article({ article, comments: serverComments }) {
       </div>
       <span className={styles.text}>{article.content}</span>
       <div>
-        <CommentInput articleId={article.id} onAdd={fetchComments} />
+        <CommentInput
+          articleId={article.id}
+          onAdd={fetchComments}
+          label="댓글달기"
+          placeholder="댓글을 입력해주세요."
+        />
       </div>
       <div>
-        <CommentList comments={comments} onRefresh={fetchComments} />
+        <CommentList
+          comments={comments}
+          onRefresh={fetchComments}
+          type="article"
+        />
       </div>
       <Link className={styles.btn} href="/articles">
         목록으로 돌아가기

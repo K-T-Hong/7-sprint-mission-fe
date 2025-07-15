@@ -84,8 +84,8 @@ export default function PostItem({ item }) {
     setLoading(true);
     try {
       if (item) {
-        await axios.patch(`/products/${product.id}`, {
-          title,
+        await axios.patch(`/products/${item.id}`, {
+          name,
           description,
           price,
           tags,

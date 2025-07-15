@@ -10,7 +10,7 @@ import DeleteModal from "./DeleteModal";
 
 const COMMENT_MAX = 200;
 
-export default function CommentList({ comments, onRefresh }) {
+export default function CommentList({ comments, onRefresh, type }) {
   const [toastMsg, setToastMsg] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMsg, setModalMsg] = useState("");
@@ -71,7 +71,7 @@ export default function CommentList({ comments, onRefresh }) {
     }
   }
 
-  if (!comments || comments.length === 0)
+  if (!comments || (comments.length === 0 && type === "article")) {
     return (
       <div className={styles.emptyArea}>
         <div className={styles.emptyImg} />
@@ -82,6 +82,14 @@ export default function CommentList({ comments, onRefresh }) {
         </span>
       </div>
     );
+  } else if (!comments || (comments.length === 0 && type === "item")) {
+    return (
+      <div className={styles.emptyArea}>
+        <div className={styles.emptyItem} />
+        <span className={styles.emptyText}>아직 문의가 없어요.</span>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -116,7 +124,6 @@ export default function CommentList({ comments, onRefresh }) {
                   </div>
                 </>
               ) : (
-                // ★ 평소에는 댓글+드롭다운 버튼
                 <>
                   <span className={styles.text}>{comment.content}</span>
                   <EditDropDownButton

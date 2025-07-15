@@ -17,8 +17,9 @@
   width: 100%;
   height: 221px;
   background-image: url("https://picsum.photos/250/250");
-  object-fit: cover;
+  background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   border-radius: 8px;
 }
 

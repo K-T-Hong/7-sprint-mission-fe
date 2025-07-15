@@ -6,7 +6,13 @@ import Modal from "./Modal";
 
 const COMMENT_MAX = 200;
 
-export default function CommentInput({ articleId, onAdd }) {
+export default function CommentInput({
+  articleId,
+  itemId,
+  onAdd,
+  label,
+  placeholder,
+}) {
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
   const [commentError, setCommentError] = useState("");
@@ -47,7 +53,7 @@ export default function CommentInput({ articleId, onAdd }) {
     <form onSubmit={handleSubmit}>
       <div className={styles.area}>
         <div className={styles.labelArea}>
-          <label className={styles.label}>댓글달기</label>
+          <label className={styles.label}>{label}</label>
           <span
             className={`${styles.length} ${commentError ? styles.error : ""}`}
           >
@@ -59,7 +65,7 @@ export default function CommentInput({ articleId, onAdd }) {
           value={comment}
           onChange={e => setComment(e.target.value)}
           disabled={loading}
-          placeholder="댓글을 입력해주세요."
+          placeholder={placeholder}
         />
         {commentError && <div className={styles.errorText}>{commentError}</div>}
         <div className={styles.btnArea}>
