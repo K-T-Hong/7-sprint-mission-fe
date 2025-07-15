@@ -142,7 +142,7 @@ export default function Item({ item, comments: serverComments }) {
       />
       <DeleteModal
         open={deleteModalOpen}
-        message="게시글을 삭제하시겠습니까?"
+        message="정말로 상품을 삭제하시겠어요?"
         onCancel={() => setDeleteModalOpen(false)}
         onConfirm={doDelete}
       />

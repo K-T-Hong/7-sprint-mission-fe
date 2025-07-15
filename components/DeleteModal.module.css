@@ -20,38 +20,42 @@
 }
 .msg {
   color: var(--Secondary-800);
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 32px;
-  margin-bottom: 22px;
-}
-.btnArea {
-  display: flex;
-  gap: 14px;
-  justify-content: center;
-}
-.cancel {
-  background: var(--Secondary-200);
-  border: none;
-  border-radius: 8px;
-  padding: 7px 24px;
-  color: var(--Secondary-600);
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
   line-height: 26px;
+  margin-bottom: 22px;
+}
+.btnArea {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+.cancel {
+  width: 88px;
+  height: 48px;
+  background: #ffffff;
+  border: 1px solid var(--error-red);
+  border-radius: 8px;
+  padding: 12px 23px;
+  color: var(--error-red);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 26px;
   cursor: pointer;
 }
 .delete {
-  background: var(--Primary-100);
-  color: #fff;
+  width: 88px;
+  height: 48px;
+  background: var(--error-red);
   border: none;
   border-radius: 8px;
-  padding: 7px 24px;
+  padding: 12px 23px;
+  color: var(--Cool-Gray-100);
   font-size: 16px;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 26px;
   cursor: pointer;
 }
