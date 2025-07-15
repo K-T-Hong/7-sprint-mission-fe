@@ -31,7 +31,9 @@ export default function Navbar() {
             중고마켓
           </Link>
         </div>
-        <button className={styles.loginButton}>로그인</button>
+        <Link href="/login" className={styles.login}>
+          로그인
+        </Link>
       </div>
     </nav>
   );

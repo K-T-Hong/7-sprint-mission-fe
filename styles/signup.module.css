@@ -1,0 +1,216 @@
+.area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding-top: 68px;
+}
+.form {
+  width: 100%;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+.logo {
+  width: 396px;
+  height: 132px;
+  background-image: url("/logo.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-bottom: 40px;
+}
+.box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.label {
+  color: var(--Secondary-800);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 26px;
+}
+.input {
+  width: 100%;
+  height: 56px;
+  padding: 16px 24px;
+  background-color: var(--Cool-Gray-100);
+  border: 1px solid transparent;
+  border-radius: 12px;
+  transition: border 0.2s;
+  color: var(--Secondary-800);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px;
+}
+.input:focus,
+.input:hover {
+  border: 1px solid var(--Primary-100);
+  outline: none;
+}
+.input::placeholder {
+  color: var(--Secondary-400);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px;
+}
+.input.error {
+  border: 1px solid var(--error-red);
+}
+.errorMsg {
+  color: var(--error-red);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+}
+.inputWrap {
+  position: relative;
+}
+.eyeBtn {
+  position: absolute;
+  right: 10px;
+  top: 30px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 56px;
+  padding: 16px 124px;
+  background-color: var(--Secondary-400);
+  border: none;
+  border-radius: 40px;
+  color: var(--Cool-Gray-100);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 32px;
+}
+
+.btn.active {
+  background: var(--Primary-100);
+  cursor: pointer;
+}
+
+.snsLogin {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 74px;
+  margin: 24px 0;
+  padding: 16px 23px;
+  background-color: #e6f2ff;
+  border: none;
+  border-radius: 8px;
+}
+.linkText {
+  color: var(--Secondary-800);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 26px;
+}
+.snsLink {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+.google {
+  width: 40px;
+  height: 40px;
+  background-image: url("/ic_google.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.kakaoBox {
+  width: 40px;
+  height: 40px;
+  background-color: #f5e14b;
+  border: none;
+  border-radius: 50px;
+}
+.kakao {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.kakaoIcon {
+  display: block;
+  width: 26px;
+  height: 24px;
+  background-image: url("/ic_kakao.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.loginText {
+  color: var(--Secondary-800);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 26px;
+}
+.loginLink {
+  margin-left: 4px;
+  color: var(--Primary-100);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 26px;
+}
+@media (min-width: 744px) and (max-width: 1199px) {
+  .form {
+    margin-top: 30px;
+  }
+}
+@media (min-width: 375px) and (max-width: 743px) {
+  .area {
+    max-width: 343px;
+  }
+  .form {
+    margin-top: 20px;
+  }
+  .logo {
+    width: 200px;
+    height: 66px;
+    margin-bottom: 24px;
+  }
+  .box {
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .label {
+    font-size: 14px;
+    line-height: 24px;
+  }
+}
