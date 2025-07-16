@@ -91,7 +91,7 @@ export default function PostItem({ item }) {
           tags,
         });
         setToastMsg("상품 수정 완료");
-        setTimeout(() => router.push(`/items/${item.id}`), 1200);
+        setTimeout(() => router.push(`/items/${item.id}`), 1000);
       } else {
         const res = await axios.post("/products", {
           name,
@@ -101,7 +101,7 @@ export default function PostItem({ item }) {
         });
         setToastMsg("상품 등록 완료");
         const newId = res.data.id;
-        setTimeout(() => router.push(`/items/${newId}`), 1200);
+        setTimeout(() => router.push(`/items/${newId}`), 1000);
       }
     } catch (err) {
       setModalMsg(item ? "상품 수정 실패" : "상품 등록 실패");

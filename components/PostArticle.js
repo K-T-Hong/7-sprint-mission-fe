@@ -57,12 +57,12 @@ export default function PostArticle({ article }) {
       if (article) {
         await axios.patch(`/articles/${article.id}`, { title, content });
         setToastMsg("게시글 수정 완료");
-        setTimeout(() => router.push(`/articles/${article.id}`), 1200);
+        setTimeout(() => router.push(`/articles/${article.id}`), 1000);
       } else {
         const res = await axios.post("/articles", { title, content });
         setToastMsg("게시글 등록 완료");
         const newId = res.data.id;
-        setTimeout(() => router.push(`/articles/${newId}`), 1200);
+        setTimeout(() => router.push(`/articles/${newId}`), 1000);
       }
     } catch (err) {
       setModalMsg(article ? "게시글 수정 실패" : "게시글 등록 실패");

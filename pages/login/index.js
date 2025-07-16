@@ -1,6 +1,10 @@
 import Link from "next/link";
 import styles from "@/styles/login.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Modal from "@/components/Modal";
+import Toast from "@/components/Toast";
+import axios from "@/lib/axios";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -8,29 +12,77 @@ export default function Login() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [show, setShow] = useState(false);
+  const [toastMsg, setToastMsg] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMsg, setModalMsg] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("accessToken");
+      if (token) {
+        router.replace("/items");
+      }
+    }
+  }, [router]);
 
   const isEmail = email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const canLogin = isEmail(email) && password.length >= 8;
 
-  const handleSubmit = e => {
+  function handleKeyDown(e) {
+    if (e.key === "Enter" && canLogin && !loading) {
+      handleSubmit(e);
+    }
+  }
+
+  const handleSubmit = async e => {
     e.preventDefault();
+    setEmailError("");
+    setPasswordError("");
     let valid = true;
 
     if (!isEmail(email)) {
       setEmailError("올바른 이메일 형식이 아닙니다.");
       valid = false;
-    } else {
-      setEmailError("");
     }
 
     if (password.length < 8) {
       setPasswordError("비밀번호를 8자 이상 입력해주세요.");
       valid = false;
-    } else {
-      setPasswordError("");
     }
 
     if (!valid) return;
-    // 로그인 로직
+
+    setLoading(true);
+    try {
+      const res = await axios.post("/auth/signIn", {
+        email,
+        password,
+      });
+
+      const accessToken = res.data?.accessToken;
+      if (accessToken) {
+        localStorage.setItem("accessToken", accessToken);
+      }
+
+      setToastMsg("로그인 성공!");
+      setTimeout(() => router.push("/items"), 1000);
+    } catch (error) {
+      const data = error.response?.data;
+
+      if (data?.errorType === "email") {
+        setEmailError(data.message);
+      } else if (data?.errorType === "password") {
+        setPasswordError(data.message);
+      } else {
+        setModalMsg(data?.message);
+        setModalOpen(true);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -57,6 +109,7 @@ export default function Login() {
               className={`${styles.input} ${passwordError ? styles.error : ""}`}
               type={show ? "text" : "password"}
               value={password}
+              onKeyDown={handleKeyDown}
               onChange={e => setPassword(e.target.value)}
               placeholder="비밀번호를 입력해주세요"
             />
@@ -78,7 +131,13 @@ export default function Login() {
             )}
           </div>
         </div>
-        <button className={styles.btn} type="submit">
+        <button
+          className={`${styles.btn} ${
+            canLogin && !loading ? styles.active : ""
+          }`}
+          type="submit"
+          disabled={!canLogin || loading}
+        >
           로그인
         </button>
         <div className={styles.snsLogin}>
@@ -104,6 +163,12 @@ export default function Login() {
           </span>
         </div>
       </form>
+      <Toast message={toastMsg} onClose={() => setToastMsg("")} />
+      <Modal
+        open={modalOpen}
+        message={modalMsg}
+        onClose={() => setModalOpen(false)}
+      />
     </div>
   );
 }

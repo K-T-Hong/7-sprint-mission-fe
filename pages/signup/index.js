@@ -1,56 +1,108 @@
 import Link from "next/link";
-import styles from "@/styles/signup.module.css";
-import { useState } from "react";
+import styles from "@/styles/signUp.module.css";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Modal from "@/components/Modal";
+import Toast from "@/components/Toast";
+import axios from "@/lib/axios";
 
-export default function Singup() {
+export default function SingUp() {
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
+  const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
   const [passCheck, setPassCheck] = useState("");
   const [emailError, setEmailError] = useState("");
-  const [nameError, setNameError] = useState("");
+  const [nicknameError, setNicknameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [passCheckError, setPassCheckError] = useState("");
   const [show, setShow] = useState(false);
   const [showCheck, setShowCheck] = useState(false);
+  const [toastMsg, setToastMsg] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMsg, setModalMsg] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("accessToken");
+      if (token) {
+        router.replace("/items");
+      }
+    }
+  }, [router]);
 
   const isEmail = email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const canSignUp =
+    isEmail(email) &&
+    nickname.length > 0 &&
+    nickname.length <= 10 &&
+    password.length >= 8 &&
+    password === passCheck;
 
-  const handleSubmit = e => {
+  function handleKeyDown(e) {
+    if (e.key === "Enter" && canSignUp && !loading) {
+      handleSubmit(e);
+    }
+  }
+
+  const handleSubmit = async e => {
     e.preventDefault();
+    setEmailError("");
+    setNicknameError("");
+    setPasswordError("");
+    setPassCheckError("");
+    setModalOpen(false);
+    setModalMsg("");
     let valid = true;
 
     if (!isEmail(email)) {
       setEmailError("올바른 이메일 형식이 아닙니다.");
       valid = false;
-    } else {
-      setEmailError("");
     }
 
-    if (name.length > 10) {
-      setNameError("닉네임은 10자까지 입력 가능합니다.");
+    if (nickname.length > 10) {
+      setNicknameError("닉네임은 10자까지 입력 가능합니다.");
       valid = false;
-    } else {
-      setNameError("");
     }
 
     if (password.length < 8) {
       setPasswordError("비밀번호를 8자 이상 입력해주세요.");
       valid = false;
-    } else {
-      setPasswordError("");
     }
 
     if (password !== passCheck) {
       setPassCheckError("비밀번호가 일치하지 않습니다.");
       valid = false;
-    } else {
-      setPassCheckError("");
     }
 
     if (!valid) return;
-    // 로그인 로직
+
+    setLoading(true);
+    try {
+      const res = await axios.post("/auth/signUp", {
+        email,
+        nickname,
+        password,
+        passwordConfirmation: passCheck,
+      });
+
+      const accessToken = res.data?.accessToken;
+      if (accessToken) {
+        localStorage.setItem("accessToken", accessToken);
+      }
+
+      setToastMsg("회원 가입 성공!");
+      setTimeout(() => router.push("/items"), 1000);
+    } catch (error) {
+      setModalMsg(error.response?.data?.message || "회원가입에 실패했습니다.");
+      setModalOpen(true);
+    } finally {
+      setLoading(false);
+    }
   };
+
   return (
     <div className={styles.area}>
       <form className={styles.form} onSubmit={handleSubmit}>
@@ -72,14 +124,14 @@ export default function Singup() {
           <label className={styles.label}>닉네임</label>
           <div>
             <input
-              className={`${styles.input} ${nameError ? styles.error : ""}`}
-              type="text"
-              id="name"
-              value={name}
-              onChange={e => setName(e.target.value)}
+              className={`${styles.input} ${nicknameError ? styles.error : ""}`}
+              value={nickname}
+              onChange={e => setNickname(e.target.value)}
               placeholder="닉네임을 입력해주세요"
             />
-            {nameError && <div className={styles.errorMsg}>{nameError}</div>}
+            {nicknameError && (
+              <div className={styles.errorMsg}>{nicknameError}</div>
+            )}
           </div>
         </div>
         <div className={styles.box}>
@@ -119,6 +171,7 @@ export default function Singup() {
               }`}
               type={showCheck ? "text" : "password"}
               value={passCheck}
+              onKeyDown={handleKeyDown}
               onChange={e => setPassCheck(e.target.value)}
               placeholder="비밀번호를 다시 한 번 입력해주세요"
             />
@@ -140,7 +193,13 @@ export default function Singup() {
             )}
           </div>
         </div>
-        <button className={styles.btn} type="submit">
+        <button
+          className={`${styles.btn} ${
+            canSignUp && !loading ? styles.active : ""
+          }`}
+          type="submit"
+          disabled={!canSignUp || loading}
+        >
           회원가입
         </button>
         <div className={styles.snsLogin}>
@@ -166,6 +225,12 @@ export default function Singup() {
           </span>
         </div>
       </form>
+      <Toast message={toastMsg} onClose={() => setToastMsg("")} />
+      <Modal
+        open={modalOpen}
+        message={modalMsg}
+        onClose={() => setModalOpen(false)}
+      />
     </div>
   );
 }
