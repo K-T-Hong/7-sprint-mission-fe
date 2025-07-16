@@ -13,14 +13,12 @@
   gap: 16px;
   text-decoration: none;
 }
-.img {
+.imgArea {
+  position: relative;
   width: 100%;
   height: 221px;
-  background-image: url("https://picsum.photos/250/250");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   border-radius: 8px;
+  overflow: hidden;
 }
 
 .textBox {
@@ -66,7 +64,7 @@
     width: 168px;
     height: 267px;
   }
-  .img {
+  .imgArea {
     height: 168px;
   }
 }

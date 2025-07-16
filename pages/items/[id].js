@@ -10,36 +10,38 @@ import Link from "next/link";
 import Toast from "@/components/Toast";
 import Modal from "@/components/Modal";
 import DeleteModal from "@/components/DeleteModal";
+import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
 
-export const getServerSideProps = async context => {
-  const productId = context.params["id"];
+async function fetchItem(id) {
+  const res = await axios.get(`/products/${id}`);
+  return res.data;
+}
+async function fetchComments(id) {
+  const res = await axios.get(`/products/${id}/comments`);
+  return Array.isArray(res.data) ? res.data : [];
+}
 
-  let item;
-  try {
-    const res = await axios.get(`/products/${productId}`);
-    item = res.data;
-  } catch {
-    return {
-      notFound: true,
-    };
-  }
-  let comments = [];
-  try {
-    const res = await axios.get(`/products/${productId}/comments`);
-    comments = Array.isArray(res.data) ? res.data : [];
-  } catch (e) {
-    comments = [];
-  }
-  return { props: { item, comments } };
-};
+export default function Item() {
+  const router = useRouter();
+  const { id } = router.query;
 
-export default function Item({ item, comments: serverComments }) {
-  const [comments, setComments] = useState(serverComments);
+  const { data: item, isLoading: loadingI } = useQuery({
+    queryKey: ["item", id],
+    queryFn: () => fetchItem(id),
+    enabled: !!id,
+  });
+
+  const { data: comments = [], refetch: refetchComments } = useQuery({
+    queryKey: ["itemComments", id],
+    queryFn: () => fetchComments(id),
+    enabled: !!id,
+  });
+
   const [toastMsg, setToastMsg] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMsg, setModalMsg] = useState("");
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const router = useRouter();
 
   function handleEdit() {
     router.push(`/items/edit/${item.id}`);
@@ -59,20 +61,25 @@ export default function Item({ item, comments: serverComments }) {
       setModalOpen(true);
     }
   }
-
-  async function fetchComments() {
-    try {
-      const res = await axios.get(`/products/${item.id}/comments`);
-      setComments(Array.isArray(res.data) ? res.data : []);
-    } catch {
-      setComments([]);
-    }
-  }
+  if (loadingI || !item) return <div>로딩 중...</div>;
 
   return (
     <div className={styles.area}>
       <div className={styles.mainBox}>
-        <div className={styles.itemImg} />
+        <div className={styles.imgArea}>
+          <Image
+            src={
+              item.images && item.images.length > 0
+                ? item.images[0]
+                : "/img_default.svg"
+            }
+            alt={item.name}
+            fill
+            style={{ objectFit: "cover" }}
+            sizes="(max-width:600px) 100vw, 221px"
+            priority
+          />
+        </div>
         <div className={styles.box}>
           <div className={styles.textBox}>
             <div className={styles.titleBox}>
@@ -110,7 +117,7 @@ export default function Item({ item, comments: serverComments }) {
             <div className={styles.userBox}>
               <div className={styles.userIc} />
               <div className={styles.userText}>
-                <span className={styles.userName}>총명한 판다</span>
+                <span className={styles.userName}>{item.ownerNickname}</span>
                 <span className={styles.date}>
                   {formatDate(item.createdAt)}
                 </span>
@@ -118,18 +125,22 @@ export default function Item({ item, comments: serverComments }) {
             </div>
             <div className={styles.like}>
               <div className={styles.likeImg} />
-              <span className={styles.likeNum}>123</span>
+              <span className={styles.likeNum}>{item.favoriteCount}</span>
             </div>
           </div>
         </div>
       </div>
       <CommentInput
         itemId={item.id}
-        onAdd={fetchComments}
+        onAdd={refetchComments}
         label="문의하기"
         placeholder="개인정보를 공유 및 요청하거나, 명예 훼손, 무단 광고, 불법 정보 유포시 모니터링 후 삭제될 수 있으며, 이에 대한 민형사상 책임은 게시자에게 있습니다."
       />
-      <CommentList comments={comments} onRefresh={fetchComments} type="item" />
+      <CommentList
+        comments={comments}
+        onRefresh={refetchComments}
+        type="item"
+      />
       <Link className={styles.btn} href="/items">
         목록으로 돌아가기
         <span className={styles.img} />

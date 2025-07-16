@@ -55,11 +55,11 @@ export default function PostArticle({ article }) {
     setLoading(true);
     try {
       if (article) {
-        await axios.patch(`/article/${article.id}`, { title, content });
+        await axios.patch(`/articles/${article.id}`, { title, content });
         setToastMsg("게시글 수정 완료");
         setTimeout(() => router.push(`/articles/${article.id}`), 1200);
       } else {
-        const res = await axios.post("/article", { title, content });
+        const res = await axios.post("/articles", { title, content });
         setToastMsg("게시글 등록 완료");
         const newId = res.data.id;
         setTimeout(() => router.push(`/articles/${newId}`), 1200);

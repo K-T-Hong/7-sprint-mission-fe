@@ -1,58 +1,51 @@
 import DropDownButton from "@/components/DropDownButton";
+import ItemList from "@/components/ItemList";
 import Pagination from "@/components/Pagination";
 import SearchInput from "@/components/SearchInput";
 import axios from "@/lib/axios";
-import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
 import styles from "@/styles/items.module.css";
-import ItemList from "@/components/ItemList";
+import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
-export async function getStaticProps() {
-  const res = await axios.get("products");
-  const items = res.data.list;
-  return { props: { items } };
+async function fetchItems({ page, size, sort, keyword }) {
+  const params = {
+    page,
+    size,
+    sort: sort === "like" ? "likeCount,desc" : "createdAt,desc",
+    ...(keyword && { keyword }),
+  };
+  const res = await axios.get("/products", { params });
+  return res.data;
 }
+const getPageSizeByWidth = () => {
+  if (typeof window === "undefined") return 10;
+  const width = window.innerWidth;
+  if (width > 1200) return 10;
+  if (width > 743) return 6;
+  return 4;
+};
 
-export default function Items({ items }) {
+export default function Items() {
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(getPageSizeByWidth);
   const [sort, setSort] = useState("recent");
   const [keyword, setKeyword] = useState("");
 
-  const filteredItems = useMemo(() => {
-    const filtered = items.filter(item =>
-      item.name.toLowerCase().includes(keyword.toLowerCase())
-    );
-    if (sort === "like") {
-      return [...filtered].sort((a, b) => b.like - a.like);
-    } else {
-      return [...filtered].sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-      );
-    }
-  }, [items, sort, keyword]);
-
-  const totalPages = Math.ceil(filteredItems.length / pageSize);
-  const paginatedItems = filteredItems.slice(
-    (page - 1) * pageSize,
-    page * pageSize
-  );
-
   useEffect(() => {
     function updatePageSize() {
-      const width = window.innerWidth;
-      if (width > 1200) {
-        setPageSize(10);
-      } else if (width > 743) {
-        setPageSize(6);
-      } else {
-        setPageSize(4);
-      }
+      setPageSize(getPageSizeByWidth());
     }
-    updatePageSize();
     window.addEventListener("resize", updatePageSize);
     return () => window.removeEventListener("resize", updatePageSize);
   }, []);
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["items", page, pageSize, sort, keyword],
+    queryFn: () => fetchItems({ page, size: pageSize, sort, keyword }),
+    keepPreviousData: true,
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <div className={styles.area}>
@@ -61,10 +54,13 @@ export default function Items({ items }) {
         <SearchInput
           className={styles.input}
           value={keyword}
-          onChange={e => setKeyword(e.target.value)}
+          onChange={e => {
+            setPage(1);
+            setKeyword(e.target.value);
+          }}
           placeholder="검색할 상품을 입력해주세요"
         />
-        <Link className={styles.postBtn} href="items/write">
+        <Link className={styles.postBtn} href="/items/write">
           상품 등록하기
         </Link>
         <div className={styles.btnArea}>
@@ -72,15 +68,21 @@ export default function Items({ items }) {
         </div>
       </div>
       <div>
-        <ItemList items={paginatedItems} />
+        {isError ? (
+          <div>에러 발생!</div>
+        ) : isLoading ? (
+          <div>로딩 중...</div>
+        ) : (
+          <ItemList items={data?.list ?? []} />
+        )}
       </div>
-      <div>
+      {isLoading || !data ? null : (
         <Pagination
           page={page}
-          totalPages={totalPages}
+          totalPages={Math.ceil((data.totalCount ?? 1) / pageSize)}
           onPageChange={setPage}
         />
-      </div>
+      )}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import styles from "./BestArticles.module.css";
 import formatDate from "@/lib/formatDate";
+import Image from "next/image";
 
 export default function BestArticles({ articles }) {
   return (
@@ -15,15 +16,20 @@ export default function BestArticles({ articles }) {
             <div className={styles.titleBox}>
               <span className={styles.title}>{article.title}</span>
               <div className={styles.imgBox}>
-                <div className={styles.img} />
+                <Image
+                  src={article.image || "/img_default.svg"}
+                  alt={article.title}
+                  width={48}
+                  height={45}
+                />
               </div>
             </div>
             <div className={styles.textBox}>
               <div className={styles.userBox}>
-                <span className={styles.name}>작성자닉네임</span>
+                <span className={styles.name}>{article.writer?.nickname}</span>
                 <div className={styles.likeBox}>
                   <div className={styles.likeImg} />
-                  <span className={styles.likeNum}>9999+</span>
+                  <span className={styles.likeNum}>{article.likeCount}</span>
                 </div>
               </div>
               <span className={styles.date}>

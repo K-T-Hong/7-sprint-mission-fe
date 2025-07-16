@@ -1,46 +1,46 @@
 import CommentInput from "@/components/CommentInput";
 import CommentList from "@/components/CommentList";
-import formatDate from "@/lib/formatDate";
-import axios from "@/lib/axios";
-import { useState } from "react";
-import Link from "next/link";
-import styles from "@/styles/article[id].module.css";
-import EditDropDownButton from "@/components/EditDropDownButton";
-import { useRouter } from "next/router";
 import DeleteModal from "@/components/DeleteModal";
-import Toast from "@/components/Toast";
+import EditDropDownButton from "@/components/EditDropDownButton";
 import Modal from "@/components/Modal";
+import Toast from "@/components/Toast";
+import axios from "@/lib/axios";
+import formatDate from "@/lib/formatDate";
+import styles from "@/styles/article[id].module.css";
+import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
-export const getServerSideProps = async context => {
-  const articleId = context.params["id"];
+async function fetchArticle(id) {
+  const res = await axios.get(`/articles/${id}`);
+  return res.data;
+}
+async function fetchComments(id) {
+  const res = await axios.get(`/articles/${id}/comments`);
+  return Array.isArray(res.data) ? res.data : [];
+}
 
-  let article;
-  try {
-    const res = await axios.get(`/article/${articleId}`);
-    article = res.data;
-  } catch {
-    return {
-      notFound: true,
-    };
-  }
-  let comments = [];
-  try {
-    const res = await axios.get(`/article/${articleId}/comments`);
-    comments = Array.isArray(res.data) ? res.data : [];
-  } catch (e) {
-    comments = [];
-  }
+export default function Article() {
+  const router = useRouter();
+  const { id } = router.query;
 
-  return { props: { article, comments } };
-};
+  const { data: article, isLoading: loadingA } = useQuery({
+    queryKey: ["article", id],
+    queryFn: () => fetchArticle(id),
+    enabled: !!id,
+  });
 
-export default function Article({ article, comments: serverComments }) {
-  const [comments, setComments] = useState(serverComments);
+  const { data: comments = [], refetch: refetchComments } = useQuery({
+    queryKey: ["comments", id],
+    queryFn: () => fetchComments(id),
+    enabled: !!id,
+  });
+
   const [toastMsg, setToastMsg] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMsg, setModalMsg] = useState("");
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const router = useRouter();
 
   function handleEdit() {
     router.push(`/articles/edit/${article.id}`);
@@ -61,14 +61,8 @@ export default function Article({ article, comments: serverComments }) {
     }
   }
 
-  async function fetchComments() {
-    try {
-      const res = await axios.get(`/article/${article.id}/comments`);
-      setComments(Array.isArray(res.data) ? res.data : []);
-    } catch {
-      setComments([]);
-    }
-  }
+  if (loadingA) return <div>로딩 중...</div>;
+  if (!article) return <div>해당 게시글이 없습니다.</div>;
 
   return (
     <div className={styles.area}>
@@ -83,12 +77,12 @@ export default function Article({ article, comments: serverComments }) {
         <div className={styles.etcBox}>
           <div className={styles.userBox}>
             <div className={styles.userIc} />
-            <span className={styles.name}>작성자닉네임</span>
+            <span className={styles.name}>{article.writer?.nickname}</span>
             <span className={styles.date}>{formatDate(article.createdAt)}</span>
           </div>
           <div className={styles.likeBox}>
             <div className={styles.likeImg} />
-            <span className={styles.likeNum}>9999+</span>
+            <span className={styles.likeNum}>{article.likeCount}</span>
           </div>
         </div>
       </div>
@@ -96,7 +90,7 @@ export default function Article({ article, comments: serverComments }) {
       <div>
         <CommentInput
           articleId={article.id}
-          onAdd={fetchComments}
+          onAdd={refetchComments}
           label="댓글달기"
           placeholder="댓글을 입력해주세요."
         />
@@ -104,7 +98,7 @@ export default function Article({ article, comments: serverComments }) {
       <div>
         <CommentList
           comments={comments}
-          onRefresh={fetchComments}
+          onRefresh={refetchComments}
           type="article"
         />
       </div>
