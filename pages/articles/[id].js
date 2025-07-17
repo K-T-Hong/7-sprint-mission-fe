@@ -18,8 +18,10 @@ async function fetchArticle(id) {
   return res.data;
 }
 async function fetchComments(id) {
-  const res = await axios.get(`/articles/${id}/comments`);
-  return Array.isArray(res.data) ? res.data : [];
+  const res = await axios.get(`/articles/${id}/comments`, {
+    params: { limit: 10 },
+  });
+  return Array.isArray(res.data.list) ? res.data.list : [];
 }
 
 export default function Article() {
@@ -72,15 +74,19 @@ export default function Article() {
   if (loadingA) return <div>로딩 중...</div>;
   if (!article) return <div>해당 게시글이 없습니다.</div>;
 
+  const isOwner = user && article.writer && user.id === article.writer.id;
+
   return (
     <div className={styles.area}>
       <div className={styles.textBox}>
         <div className={styles.titleBox}>
           <span className={styles.title}>{article.title}</span>
-          <EditDropDownButton
-            onEdit={handleEdit}
-            onDelete={handleDeleteModal}
-          />
+          {isOwner && (
+            <EditDropDownButton
+              onEdit={handleEdit}
+              onDelete={handleDeleteModal}
+            />
+          )}
         </div>
         <div className={styles.etcBox}>
           <div className={styles.userBox}>
@@ -107,6 +113,8 @@ export default function Article() {
         <CommentList
           comments={comments}
           onRefresh={refetchComments}
+          setToastMsg={setToastMsg}
+          user={user}
           type="article"
         />
       </div>

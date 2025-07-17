@@ -1,17 +1,21 @@
 import axios from "@/lib/axios";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
-import styles from "./CommentList.module.css";
-import EditDropDownButton from "./EditDropDownButton";
 import { useState } from "react";
-import Toast from "./Toast";
-import Modal from "./Modal";
+import styles from "./CommentList.module.css";
 import DeleteModal from "./DeleteModal";
+import EditDropDownButton from "./EditDropDownButton";
+import Modal from "./Modal";
 
 const COMMENT_MAX = 200;
 
-export default function CommentList({ comments, onRefresh, type }) {
-  const [toastMsg, setToastMsg] = useState("");
+export default function CommentList({
+  comments,
+  onRefresh,
+  type,
+  setToastMsg,
+  user,
+}) {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMsg, setModalMsg] = useState("");
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -126,17 +130,19 @@ export default function CommentList({ comments, onRefresh, type }) {
               ) : (
                 <>
                   <span className={styles.text}>{comment.content}</span>
-                  <EditDropDownButton
-                    onEdit={() => handleEditStart(comment)}
-                    onDelete={() => handleDeleteModal(comment)}
-                  />
+                  {user && comment.writer && user.id === comment.writer.id && (
+                    <EditDropDownButton
+                      onEdit={() => handleEditStart(comment)}
+                      onDelete={() => handleDeleteModal(comment)}
+                    />
+                  )}
                 </>
               )}
             </div>
             <div className={styles.userBox}>
               <div className={styles.userIc} />
               <div className={styles.nameBox}>
-                <span className={styles.name}>작성자닉네임</span>
+                <span className={styles.name}>{comment.writer?.nickname}</span>
                 <span className={styles.date}>
                   {formatDistanceToNow(new Date(comment.createdAt), {
                     addSuffix: true,
@@ -148,7 +154,6 @@ export default function CommentList({ comments, onRefresh, type }) {
           </li>
         ))}
       </ul>
-      <Toast message={toastMsg} onClose={() => setToastMsg("")} />
       <Modal
         open={modalOpen}
         message={modalMsg}

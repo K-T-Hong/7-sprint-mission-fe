@@ -36,8 +36,20 @@ export default function CommentInput({
 
     setLoading(true);
     try {
-      await axios.post(`/article/${articleId}/comments`, { content: comment });
-      setToastMsg("댓글 등록");
+      if (articleId) {
+        await axios.post(`/articles/${articleId}/comments`, {
+          content: comment,
+        });
+        setToastMsg("댓글이 등록되었습니다.");
+      } else if (itemId) {
+        await axios.post(`/products/${itemId}/comments`, { content: comment });
+        setToastMsg("문의가 등록되었습니다.");
+      } else {
+        setModalMsg("대상 아이디가 없습니다.");
+        setModalOpen(true);
+        setLoading(false);
+        return;
+      }
       setComment("");
       if (onAdd) onAdd();
     } catch (err) {

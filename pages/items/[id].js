@@ -19,8 +19,10 @@ async function fetchItem(id) {
   return res.data;
 }
 async function fetchComments(id) {
-  const res = await axios.get(`/products/${id}/comments`);
-  return Array.isArray(res.data) ? res.data : [];
+  const res = await axios.get(`/products/${id}/comments`, {
+    params: { limit: 10 },
+  });
+  return Array.isArray(res.data.list) ? res.data.list : [];
 }
 
 export default function Item() {
@@ -71,6 +73,8 @@ export default function Item() {
   }
   if (loadingI || !item) return <div>로딩 중...</div>;
 
+  const isOwner = user && item && user.id === item.ownerId;
+
   return (
     <div className={styles.area}>
       <div className={styles.mainBox}>
@@ -93,10 +97,12 @@ export default function Item() {
             <div className={styles.titleBox}>
               <div className={styles.titleLine}>
                 <span className={styles.title}>{item.name}</span>
-                <EditDropDownButton
-                  onEdit={handleEdit}
-                  onDelete={handleDeleteModal}
-                />
+                {isOwner && (
+                  <EditDropDownButton
+                    onEdit={handleEdit}
+                    onDelete={handleDeleteModal}
+                  />
+                )}
               </div>
               <span className={styles.price}>
                 {Number(item.price).toLocaleString()}원
@@ -147,6 +153,8 @@ export default function Item() {
       <CommentList
         comments={comments}
         onRefresh={refetchComments}
+        setToastMsg={setToastMsg}
+        user={user}
         type="item"
       />
       <Link className={styles.btn} href="/items">

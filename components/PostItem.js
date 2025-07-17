@@ -114,14 +114,7 @@ export default function PostItem({ item }) {
 
   return (
     <div className={styles.formArea}>
-      <form
-        onSubmit={handleSubmit}
-        onKeyDown={e => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-          }
-        }}
-      >
+      <form onSubmit={handleSubmit}>
         <div className={styles.titleArea}>
           <h1 className={styles.title}>상품 {item ? "수정" : "등록"}하기</h1>
           <button
