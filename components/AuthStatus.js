@@ -1,13 +1,26 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./AuthStatus.module.css";
 import { useAuth } from "@/contexts/AuthContext";
+import axios from "@/lib/axios";
 
 export default function AuthStatus({ user, onLogout }) {
   const [showInfo, setShowInfo] = useState(false);
+  const [favoritesCount, setFavoritesCount] = useState(0);
   const { logout } = useAuth();
   const infoBoxRef = useRef();
 
   const handleUserClick = () => setShowInfo(v => !v);
+
+  useEffect(() => {
+    if (!user) return setFavoritesCount(0);
+    let ignore = false;
+    axios.get("/users/me/favorites?page=1&pageSize=1").then(res => {
+      if (!ignore) setFavoritesCount(res.data.totalCount ?? 0);
+    });
+    return () => {
+      ignore = true;
+    };
+  }, [user]);
 
   useEffect(() => {
     if (!showInfo) return;
@@ -53,10 +66,8 @@ export default function AuthStatus({ user, onLogout }) {
               </span>
             </div>
             <div className={styles.infoItem}>
-              <span className={styles.infoTitle}>나의 좋아요 목록</span>
-              <span className={styles.count}>
-                {user.favorites?.totalCount ?? 0}
-              </span>
+              <span className={styles.infoTitle}>좋아요한 상품</span>
+              <span className={styles.count}>{favoritesCount}</span>
             </div>
           </div>
           <button className={styles.btn} onClick={handleLogout}>

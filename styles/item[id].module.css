@@ -163,33 +163,6 @@
   line-height: 24px;
 }
 
-.like {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-left: 24px;
-  padding: 4px 12px;
-  gap: 4px;
-  border: 1px solid var(--Secondary-200);
-  border-radius: 35px;
-}
-
-.likeImg {
-  width: 32px;
-  height: 32px;
-  background-image: url("/ic_like.svg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.likeNum {
-  color: var(--Cool-Gray-500);
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 26px;
-}
 .btn {
   display: flex;
   justify-content: center;

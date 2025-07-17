@@ -70,33 +70,6 @@
   line-height: 24px;
 }
 
-.likeBox {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid var(--Secondary-200);
-  border-radius: 35px;
-  padding: 4px 12px;
-  margin-left: 32px;
-  gap: 4px;
-}
-.likeImg {
-  width: 32px;
-  height: 32px;
-  background-image: url("/ic_like.svg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.likeNum {
-  color: var(--Cool-Gray-500);
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 26px;
-}
-
 .text {
   color: var(--Secondary-800);
   font-size: 18px;

@@ -13,6 +13,7 @@ import DeleteModal from "@/components/DeleteModal";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
+import LikeButton from "@/components/LikeButton";
 
 async function fetchItem(id) {
   const res = await axios.get(`/products/${id}`);
@@ -140,10 +141,15 @@ export default function Item() {
                 </span>
               </div>
             </div>
-            <div className={styles.like}>
-              <div className={styles.likeImg} />
-              <span className={styles.likeNum}>{item.favoriteCount}</span>
-            </div>
+            <LikeButton
+              type="product"
+              id={item.id}
+              liked={item.isFavorite}
+              count={item.favoriteCount}
+              onError={() => setToastMsg("좋아요 처리에 실패했습니다.")}
+              disabled={!user}
+              queryKey="product"
+            />
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@ import CommentInput from "@/components/CommentInput";
 import CommentList from "@/components/CommentList";
 import DeleteModal from "@/components/DeleteModal";
 import EditDropDownButton from "@/components/EditDropDownButton";
+import LikeButton from "@/components/LikeButton";
 import Modal from "@/components/Modal";
 import Toast from "@/components/Toast";
 import { useAuth } from "@/contexts/AuthContext";
@@ -98,10 +99,15 @@ export default function Article() {
             <span className={styles.name}>{article.writer?.nickname}</span>
             <span className={styles.date}>{formatDate(article.createdAt)}</span>
           </div>
-          <div className={styles.likeBox}>
-            <div className={styles.likeImg} />
-            <span className={styles.likeNum}>{article.likeCount}</span>
-          </div>
+          <LikeButton
+            type="article"
+            id={article.id}
+            liked={article.isLiked}
+            count={article.likeCount}
+            onError={() => setToastMsg("좋아요 처리에 실패했습니다.")}
+            disabled={!user}
+            queryKey="article"
+          />
         </div>
       </div>
       <span className={styles.text}>{article.content}</span>

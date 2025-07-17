@@ -28,8 +28,22 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
+  const refetchUser = async () => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) return setUser(null);
+    try {
+      const res = await axios.get("/users/me", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setUser(res.data);
+    } catch {
+      setUser(null);
+      localStorage.removeItem("accessToken");
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, setUser, login, logout }}>
+    <AuthContext.Provider value={{ user, setUser, login, logout, refetchUser }}>
       {children}
     </AuthContext.Provider>
   );
