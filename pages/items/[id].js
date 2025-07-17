@@ -2,7 +2,7 @@ import EditDropDownButton from "@/components/EditDropDownButton";
 import axios from "@/lib/axios";
 import formatDate from "@/lib/formatDate";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "@/styles/item[id].module.css";
 import CommentInput from "@/components/CommentInput";
 import CommentList from "@/components/CommentList";
@@ -12,6 +12,7 @@ import Modal from "@/components/Modal";
 import DeleteModal from "@/components/DeleteModal";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import { useAuth } from "@/contexts/AuthContext";
 
 async function fetchItem(id) {
   const res = await axios.get(`/products/${id}`);
@@ -23,8 +24,15 @@ async function fetchComments(id) {
 }
 
 export default function Item() {
+  const { user } = useAuth();
   const router = useRouter();
   const { id } = router.query;
+
+  useEffect(() => {
+    if (user === null) {
+      router.replace("/login");
+    }
+  }, [user, router]);
 
   const { data: item, isLoading: loadingI } = useQuery({
     queryKey: ["item", id],

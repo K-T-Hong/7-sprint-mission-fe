@@ -128,7 +128,7 @@ export default function Login() {
               tabIndex={-1}
             >
               <img
-                src={show ? "/ic_eye_off.svg" : "/ic_eye_open.svg"}
+                src={show ? "/ic_eye_open.svg" : "/ic_eye_off.svg"}
                 width={24}
                 height={24}
               />

@@ -4,13 +4,14 @@ import DeleteModal from "@/components/DeleteModal";
 import EditDropDownButton from "@/components/EditDropDownButton";
 import Modal from "@/components/Modal";
 import Toast from "@/components/Toast";
+import { useAuth } from "@/contexts/AuthContext";
 import axios from "@/lib/axios";
 import formatDate from "@/lib/formatDate";
 import styles from "@/styles/article[id].module.css";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 async function fetchArticle(id) {
   const res = await axios.get(`/articles/${id}`);
@@ -22,8 +23,15 @@ async function fetchComments(id) {
 }
 
 export default function Article() {
+  const { user } = useAuth();
   const router = useRouter();
   const { id } = router.query;
+
+  useEffect(() => {
+    if (user === null) {
+      router.replace("/login");
+    }
+  }, [user, router]);
 
   const { data: article, isLoading: loadingA } = useQuery({
     queryKey: ["article", id],
