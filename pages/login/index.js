@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Modal from "@/components/Modal";
 import Toast from "@/components/Toast";
 import axios from "@/lib/axios";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -17,6 +18,7 @@ export default function Login() {
   const [modalMsg, setModalMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const { login } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -62,9 +64,14 @@ export default function Login() {
         password,
       });
 
-      const accessToken = res.data?.accessToken;
-      if (accessToken) {
-        localStorage.setItem("accessToken", accessToken);
+      const { accessToken, user } = res.data;
+      if (accessToken && user) {
+        login(accessToken, user);
+      } else if (accessToken) {
+        const userRes = await axios.get("/users/me", {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        login(accessToken, userRes.data);
       }
 
       setToastMsg("로그인 성공!");

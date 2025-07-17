@@ -4,6 +4,7 @@ import "@/styles/reset.css";
 import "@/styles/globals.css";
 import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 export default function App({ Component, pageProps }) {
   const [queryClient] = useState(() => new QueryClient());
@@ -11,11 +12,13 @@ export default function App({ Component, pageProps }) {
   return (
     <QueryClientProvider client={queryClient}>
       <div className="layout">
-        <Navbar />
-        <main className="mainContent">
-          <Component {...pageProps} />
-        </main>
-        <Footer />
+        <AuthProvider>
+          <Navbar />
+          <main className="mainContent">
+            <Component {...pageProps} />
+          </main>
+          <Footer />
+        </AuthProvider>
       </div>
     </QueryClientProvider>
   );

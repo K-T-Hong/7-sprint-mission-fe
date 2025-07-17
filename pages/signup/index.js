@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Modal from "@/components/Modal";
 import Toast from "@/components/Toast";
 import axios from "@/lib/axios";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function SingUp() {
   const [email, setEmail] = useState("");
@@ -22,6 +23,7 @@ export default function SingUp() {
   const [modalMsg, setModalMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const { login } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -88,9 +90,14 @@ export default function SingUp() {
         passwordConfirmation: passCheck,
       });
 
-      const accessToken = res.data?.accessToken;
-      if (accessToken) {
-        localStorage.setItem("accessToken", accessToken);
+      const { accessToken, user } = res.data;
+      if (accessToken && user) {
+        login(accessToken, user);
+      } else if (accessToken) {
+        const userRes = await axios.get("/users/me", {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        login(accessToken, userRes.data);
       }
 
       setToastMsg("회원 가입 성공!");
