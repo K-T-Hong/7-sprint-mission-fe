@@ -26,15 +26,9 @@ async function fetchComments(id) {
 }
 
 export default function Item() {
-  const { user } = useAuth();
+  const { user } = useAuth(undefined);
   const router = useRouter();
   const { id } = router.query;
-
-  useEffect(() => {
-    if (user === null) {
-      router.replace("/login");
-    }
-  }, [user, router]);
 
   const { data: item, isLoading: loadingI } = useQuery({
     queryKey: ["item", id],
@@ -70,6 +64,15 @@ export default function Item() {
       setModalMsg("삭제에 실패했습니다.");
       setModalOpen(true);
     }
+  }
+  useEffect(() => {
+    if (user === null) {
+      router.replace("/login");
+    }
+  }, [user, router]);
+
+  if (user === undefined) {
+    return null;
   }
   if (loadingI || !item) return <div>로딩 중...</div>;
 

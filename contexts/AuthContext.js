@@ -4,7 +4,7 @@ import axios from "@/lib/axios";
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(undefined);
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
