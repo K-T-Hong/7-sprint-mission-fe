@@ -64,7 +64,10 @@ export default function Articles() {
           <SearchInput
             className={styles.input}
             value={keyword}
-            onChange={e => setKeyword(e.target.value)}
+            onChange={e => {
+              setPage(1);
+              setKeyword(e.target.value);
+            }}
             placeholder="검색할 상품을 입력해주세요"
           />
           <DropDownButton sort={sort} setSort={setSort} />
@@ -75,7 +78,15 @@ export default function Articles() {
           ) : isLoading ? (
             <div>로딩 중...</div>
           ) : (
-            <ArticleList articles={(data.list ?? []).slice(0, 5)} />
+            <ArticleList
+              articles={
+                sort === "like"
+                  ? (data.list ?? [])
+                      .sort((a, b) => b.likeCount - a.likeCount)
+                      .slice(0, 5)
+                  : (data.list ?? []).slice(0, 5)
+              }
+            />
           )}
         </div>
         {isLoading || !data ? null : (

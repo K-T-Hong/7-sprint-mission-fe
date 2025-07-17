@@ -12,7 +12,7 @@ async function fetchItems({ page, size, sort, keyword }) {
   const params = {
     page,
     size,
-    sort: sort === "like" ? "likeCount,desc" : "createdAt,desc",
+    sort: sort === "like" ? "favoriteCount,desc" : "createdAt,desc",
     ...(keyword && { keyword }),
   };
   const res = await axios.get("/products", { params });
@@ -34,7 +34,11 @@ export default function Items() {
 
   useEffect(() => {
     function updatePageSize() {
-      setPageSize(getPageSizeByWidth());
+      const newSize = getPageSizeByWidth();
+      setPageSize(prev => {
+        if (prev !== newSize) setPage(1);
+        return newSize;
+      });
     }
     window.addEventListener("resize", updatePageSize);
     return () => window.removeEventListener("resize", updatePageSize);
@@ -73,7 +77,15 @@ export default function Items() {
         ) : isLoading ? (
           <div>로딩 중...</div>
         ) : (
-          <ItemList items={data?.list ?? []} />
+          <ItemList
+            items={
+              sort === "like"
+                ? (data?.list ?? [])
+                    .sort((a, b) => b.favoriteCount - a.favoriteCount)
+                    .slice(0, pageSize)
+                : (data?.list ?? []).slice(0, pageSize)
+            }
+          />
         )}
       </div>
       {isLoading || !data ? null : (
