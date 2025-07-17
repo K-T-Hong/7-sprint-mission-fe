@@ -22,6 +22,7 @@ export default function PostItem({ item }) {
   const [toastMsg, setToastMsg] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMsg, setModalMsg] = useState("");
+  const { setUser } = useAuth();
   const router = useRouter();
 
   const {
@@ -100,6 +101,8 @@ export default function PostItem({ item }) {
           tags,
         });
         setToastMsg("상품 등록 완료");
+        const userRes = await axios.get("/users/me");
+        setUser && setUser(userRes.data);
         const newId = res.data.id;
         setTimeout(() => router.push(`/items/${newId}`), 1000);
       }

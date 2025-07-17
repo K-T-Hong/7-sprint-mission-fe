@@ -4,6 +4,7 @@ import styles from "./PostArticle.module.css";
 import { useRouter } from "next/router";
 import Toast from "./Toast";
 import Modal from "./Modal";
+import { useAuth } from "@/contexts/AuthContext";
 
 const TITLE_MAX = 30;
 const CONTENT_MAX = 1000;
@@ -14,6 +15,7 @@ export default function PostArticle({ article }) {
   const [loading, setLoading] = useState(false);
   const [titleError, setTitleError] = useState("");
   const [contentError, setContentError] = useState("");
+  const { setUser } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -61,6 +63,8 @@ export default function PostArticle({ article }) {
       } else {
         const res = await axios.post("/articles", { title, content });
         setToastMsg("게시글 등록 완료");
+        const userRes = await axios.get("/users/me");
+        setUser && setUser(userRes.data);
         const newId = res.data.id;
         setTimeout(() => router.push(`/articles/${newId}`), 1000);
       }

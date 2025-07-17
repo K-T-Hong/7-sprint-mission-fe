@@ -56,7 +56,7 @@ export default function Article() {
 
   async function doDelete() {
     try {
-      await axios.delete(`/article/${article.id}`);
+      await axios.delete(`/articles/${article.id}`);
       setToastMsg("삭제되었습니다.");
       router.push("/articles");
     } catch (e) {

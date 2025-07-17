@@ -42,15 +42,21 @@ export default function AuthStatus({ user, onLogout }) {
           <div className={styles.infoList}>
             <div className={styles.infoItem}>
               <span className={styles.infoTitle}>나의 판매상품</span>
-              <span className={styles.count}>{user.products ?? 0}</span>
+              <span className={styles.count}>
+                {user.products?.totalCount ?? 0}
+              </span>
             </div>
             <div className={styles.infoItem}>
               <span className={styles.infoTitle}>나의 게시글</span>
-              <span className={styles.count}>{user.articles ?? 0}</span>
+              <span className={styles.count}>
+                {user.articles?.totalCount ?? 0}
+              </span>
             </div>
             <div className={styles.infoItem}>
               <span className={styles.infoTitle}>나의 좋아요 목록</span>
-              <span className={styles.count}>{user.favorites ?? 0}</span>
+              <span className={styles.count}>
+                {user.favorites?.totalCount ?? 0}
+              </span>
             </div>
           </div>
           <button className={styles.btn} onClick={handleLogout}>
