@@ -13,7 +13,7 @@ async function fetchArticles({ page, size, sort, keyword }) {
   const params = {
     page,
     size,
-    sort: sort === "like" ? "likeCount,desc" : "createdAt,desc",
+    orderBy: sort === "like" ? "like" : "recent",
     ...(keyword && { keyword }),
   };
   const res = await axios.get("/articles", { params });
@@ -78,15 +78,7 @@ export default function Articles() {
           ) : isLoading ? (
             <div>로딩 중...</div>
           ) : (
-            <ArticleList
-              articles={
-                sort === "like"
-                  ? (data.list ?? [])
-                      .sort((a, b) => b.likeCount - a.likeCount)
-                      .slice(0, 5)
-                  : (data.list ?? []).slice(0, 5)
-              }
-            />
+            <ArticleList articles={data.list ?? []} />
           )}
         </div>
         {isLoading || !data ? null : (

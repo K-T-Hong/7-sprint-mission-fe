@@ -5,6 +5,7 @@ import axios from "@/lib/axios";
 import Toast from "./Toast";
 import Modal from "./Modal";
 import { useTagBox } from "@/hooks/useTagBox";
+import { useAuth } from "@/contexts/AuthContext";
 
 const NAME_MAX = 30;
 const DESC_MIN = 10;

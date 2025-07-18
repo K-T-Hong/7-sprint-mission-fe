@@ -12,7 +12,7 @@ async function fetchItems({ page, size, sort, keyword }) {
   const params = {
     page,
     size,
-    sort: sort === "like" ? "favoriteCount,desc" : "createdAt,desc",
+    orderBy: sort === "like" ? "favorite" : "recent",
     ...(keyword && { keyword }),
   };
   const res = await axios.get("/products", { params });
@@ -77,15 +77,7 @@ export default function Items() {
         ) : isLoading ? (
           <div>로딩 중...</div>
         ) : (
-          <ItemList
-            items={
-              sort === "like"
-                ? (data?.list ?? [])
-                    .sort((a, b) => b.favoriteCount - a.favoriteCount)
-                    .slice(0, pageSize)
-                : (data?.list ?? []).slice(0, pageSize)
-            }
-          />
+          <ItemList items={data?.list ?? []} />
         )}
       </div>
       {isLoading || !data ? null : (

@@ -14,6 +14,9 @@ export default {
       "via.placeholder.com",
       "cdn.choicenews.co.kr",
       "images.unsplash.com",
+      "image.hanatour.com",
+      "cafe24.poxo.com",
+      "youtube.com",
     ],
   },
 };
