@@ -5,14 +5,14 @@ import Pagination from "@/components/Pagination";
 import SearchInput from "@/components/SearchInput";
 import axios from "@/lib/axios";
 import styles from "@/styles/articles.module.css";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-async function fetchArticles({ page, size, sort, keyword }) {
+async function fetchArticles({ page, pageSize, sort, keyword }) {
   const params = {
     page,
-    size,
+    pageSize,
     orderBy: sort === "like" ? "like" : "recent",
     ...(keyword && { keyword }),
   };
@@ -20,9 +20,14 @@ async function fetchArticles({ page, size, sort, keyword }) {
   return res.data;
 }
 
+async function fetchArticle(id) {
+  const res = await axios.get(`/articles/${id}`);
+  return res.data;
+}
+
 async function fetchBestArticles() {
   const res = await axios.get("/articles", {
-    params: { page: 1, size: 3, sort: "likeCount,desc" },
+    params: { page: 1, size: 3, orderBy: "like" },
   });
   return res.data.list;
 }
@@ -33,14 +38,30 @@ export default function Articles() {
   const [keyword, setKeyword] = useState("");
   const pageSize = 5;
 
+  const queryClient = useQueryClient();
+
   const { data, isLoading, isError } = useQuery({
     queryKey: ["articles", page, sort, keyword],
-    queryFn: () => fetchArticles({ page, size: pageSize, sort, keyword }),
+    queryFn: () => fetchArticles({ page, pageSize, sort, keyword }),
     keepPreviousData: true,
     refetchOnWindowFocus: false,
   });
 
-  const { data: bestArticles, isLoading: bestLoading } = useQuery({
+  useEffect(() => {
+    queryClient.prefetchQuery({
+      queryKey: ["articles", page + 1, sort, keyword],
+      queryFn: () => fetchArticles({ page: page + 1, pageSize, sort, keyword }),
+    });
+  }, [page, sort, keyword, pageSize, queryClient]);
+
+  function handleArticleHover(articleId) {
+    queryClient.prefetchQuery({
+      queryKey: ["article", articleId],
+      queryFn: () => fetchArticle(articleId),
+    });
+  }
+
+  const { data: bestArticles } = useQuery({
     queryKey: ["best-articles"],
     queryFn: fetchBestArticles,
     staleTime: 1000 * 60 * 10,
@@ -78,7 +99,10 @@ export default function Articles() {
           ) : isLoading ? (
             <div>로딩 중...</div>
           ) : (
-            <ArticleList articles={data.list ?? []} />
+            <ArticleList
+              articles={data.list ?? []}
+              onArticleHover={handleArticleHover}
+            />
           )}
         </div>
         {isLoading || !data ? null : (

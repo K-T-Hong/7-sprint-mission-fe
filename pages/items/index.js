@@ -4,20 +4,26 @@ import Pagination from "@/components/Pagination";
 import SearchInput from "@/components/SearchInput";
 import axios from "@/lib/axios";
 import styles from "@/styles/items.module.css";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-async function fetchItems({ page, size, sort, keyword }) {
+async function fetchItems({ page, pageSize, sort, keyword }) {
   const params = {
     page,
-    size,
+    pageSize,
     orderBy: sort === "like" ? "favorite" : "recent",
     ...(keyword && { keyword }),
   };
   const res = await axios.get("/products", { params });
   return res.data;
 }
+
+async function fetchItem(id) {
+  const res = await axios.get(`/products/${id}`);
+  return res.data;
+}
+
 const getPageSizeByWidth = () => {
   if (typeof window === "undefined") return 10;
   const width = window.innerWidth;
@@ -31,6 +37,8 @@ export default function Items() {
   const [pageSize, setPageSize] = useState(getPageSizeByWidth);
   const [sort, setSort] = useState("recent");
   const [keyword, setKeyword] = useState("");
+
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     function updatePageSize() {
@@ -46,10 +54,31 @@ export default function Items() {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["items", page, pageSize, sort, keyword],
-    queryFn: () => fetchItems({ page, size: pageSize, sort, keyword }),
+    queryFn: () => fetchItems({ page, pageSize, sort, keyword }),
     keepPreviousData: true,
     refetchOnWindowFocus: false,
   });
+
+  useEffect(() => {
+    queryClient.prefetchQuery({
+      queryKey: ["items", page + 1, pageSize, sort, keyword],
+      queryFn: () => fetchItems({ page, pageSize, sort, keyword }),
+    });
+  }, [page, pageSize, sort, keyword, queryClient]);
+
+  useEffect(() => {
+    queryClient.prefetchQuery({
+      queryKey: ["items", page + 1, pageSize, sort, keyword],
+      queryFn: () => fetchItems({ page: page + 1, pageSize, sort, keyword }),
+    });
+  }, [page, pageSize, sort, keyword, queryClient]);
+
+  function handleItemHover(itemId) {
+    queryClient.prefetchQuery({
+      queryKey: ["item", itemId],
+      queryFn: () => fetchItem(itemId),
+    });
+  }
 
   return (
     <div className={styles.area}>
@@ -77,7 +106,7 @@ export default function Items() {
         ) : isLoading ? (
           <div>로딩 중...</div>
         ) : (
-          <ItemList items={data?.list ?? []} />
+          <ItemList items={data?.list ?? []} onItemHover={handleItemHover} />
         )}
       </div>
       {isLoading || !data ? null : (

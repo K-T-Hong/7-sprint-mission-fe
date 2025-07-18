@@ -2,11 +2,14 @@ import Link from "next/link";
 import styles from "./ItemList.module.css";
 import Image from "next/image";
 
-export default function ItemList({ items }) {
+export default function ItemList({ items, onItemHover }) {
   return (
     <ul className={styles.ul}>
       {items?.map(item => (
-        <li key={item.id}>
+        <li
+          key={item.id}
+          onMouseEnter={() => onItemHover && onItemHover(item.id)}
+        >
           <Link className={styles.area} href={`/items/${item.id}`}>
             <div className={styles.imgArea}>
               <Image

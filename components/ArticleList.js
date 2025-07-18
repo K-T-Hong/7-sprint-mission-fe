@@ -3,11 +3,14 @@ import formatDate from "@/lib/formatDate";
 import styles from "./ArticleList.module.css";
 import Image from "next/image";
 
-export default function ArticleList({ articles }) {
+export default function ArticleList({ articles, onArticleHover }) {
   return (
     <ul>
       {articles?.map(article => (
-        <li key={article.id}>
+        <li
+          key={article.id}
+          onMouseEnter={() => onArticleHover && onArticleHover(article.id)}
+        >
           <Link className={styles.area} href={`/articles/${article.id}`}>
             <div className={styles.titleBox}>
               <span className={styles.title}>{article.title}</span>
