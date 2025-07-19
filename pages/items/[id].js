@@ -14,6 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
 import LikeButton from "@/components/LikeButton";
+import LoadingIndicator from "@/components/LoadingIndicator";
 
 async function fetchItem(id) {
   const res = await axios.get(`/products/${id}`);
@@ -75,7 +76,7 @@ export default function Item() {
   if (user === undefined) {
     return null;
   }
-  if (loadingI || !item) return <div>로딩 중...</div>;
+  if (loadingI || !item) return <LoadingIndicator />;
 
   const isOwner = user && item && user.id === item.ownerId;
 

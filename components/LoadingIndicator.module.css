@@ -1,0 +1,22 @@
+.area {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  height: 300px;
+  margin: 200px auto;
+}
+
+.img {
+  width: 100px;
+  height: 100px;
+}
+
+.text {
+  color: var(--Primary-100);
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 26px;
+}

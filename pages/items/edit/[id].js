@@ -2,6 +2,8 @@ import PostItem from "@/components/PostItem";
 import axios from "@/lib/axios";
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
+import LoadingIndicator from "@/components/LoadingIndicator";
+import ErrorIndicator from "@/components/ErrorIndicator";
 
 async function fetchItem(id) {
   const res = await axios.get(`/products/${id}`);
@@ -18,8 +20,8 @@ export default function EditPage() {
     enabled: !!id,
   });
 
-  if (isLoading) return <div>로딩 중...</div>;
-  if (!item) return <div>해당 상품이 없습니다.</div>;
+  if (isLoading) return <LoadingIndicator />;
+  if (!item) return <ErrorIndicator errorMsg="해당 상품이 없습니다." />;
 
   return <PostItem item={item} />;
 }

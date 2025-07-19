@@ -2,7 +2,9 @@ import CommentInput from "@/components/CommentInput";
 import CommentList from "@/components/CommentList";
 import DeleteModal from "@/components/DeleteModal";
 import EditDropDownButton from "@/components/EditDropDownButton";
+import ErrorIndicator from "@/components/ErrorIndicator";
 import LikeButton from "@/components/LikeButton";
+import LoadingIndicator from "@/components/LoadingIndicator";
 import Modal from "@/components/Modal";
 import Toast from "@/components/Toast";
 import { useAuth } from "@/contexts/AuthContext";
@@ -76,8 +78,8 @@ export default function Article() {
     return null;
   }
 
-  if (loadingA) return <div>로딩 중...</div>;
-  if (!article) return <div>해당 게시글이 없습니다.</div>;
+  if (loadingA) return <LoadingIndicator />;
+  if (!article) return <ErrorIndicator errorMsg="해당 게시글이 없습니다." />;
 
   const isOwner = user && article.writer && user.id === article.writer.id;
 

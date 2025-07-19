@@ -1,3 +1,5 @@
+import ErrorIndicator from "@/components/ErrorIndicator";
+import LoadingIndicator from "@/components/LoadingIndicator";
 import PostArticle from "@/components/PostArticle";
 import axios from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
@@ -18,8 +20,8 @@ export default function EditPage() {
     enabled: !!id,
   });
 
-  if (isLoading) return <div>로딩 중...</div>;
-  if (!article) return <div>해당 게시글이 없습니다.</div>;
+  if (isLoading) return <LoadingIndicator />;
+  if (!article) return <ErrorIndicator errorMsg="해당 게시글이 없습니다." />;
 
   return <PostArticle article={article} />;
 }

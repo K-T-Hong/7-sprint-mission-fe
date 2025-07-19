@@ -1,5 +1,7 @@
 import DropDownButton from "@/components/DropDownButton";
+import ErrorIndicator from "@/components/ErrorIndicator";
 import ItemList from "@/components/ItemList";
+import LoadingIndicator from "@/components/LoadingIndicator";
 import Pagination from "@/components/Pagination";
 import SearchInput from "@/components/SearchInput";
 import axios from "@/lib/axios";
@@ -102,9 +104,9 @@ export default function Items() {
       </div>
       <div>
         {isError ? (
-          <div>에러 발생!</div>
+          <ErrorIndicator errorMsg="에러 발생!" />
         ) : isLoading ? (
-          <div>로딩 중...</div>
+          <LoadingIndicator />
         ) : (
           <ItemList items={data?.list ?? []} onItemHover={handleItemHover} />
         )}

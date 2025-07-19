@@ -1,6 +1,8 @@
 import ArticleList from "@/components/ArticleList";
 import BestArticles from "@/components/BestArticles";
 import DropDownButton from "@/components/DropDownButton";
+import ErrorIndicator from "@/components/ErrorIndicator";
+import LoadingIndicator from "@/components/LoadingIndicator";
 import Pagination from "@/components/Pagination";
 import SearchInput from "@/components/SearchInput";
 import axios from "@/lib/axios";
@@ -95,9 +97,9 @@ export default function Articles() {
         </div>
         <div className={styles.listBox}>
           {isError ? (
-            <div>에러 발생!</div>
+            <ErrorIndicator errorMsg="에러 발생!" />
           ) : isLoading ? (
-            <div>로딩 중...</div>
+            <LoadingIndicator />
           ) : (
             <ArticleList
               articles={data.list ?? []}
